@@ -8,6 +8,8 @@
 */
 
 #include <stdio.h>
+#include <time.h>
+#include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <errno.h>
@@ -20,6 +22,17 @@
 
 #define MAX_BUFFER_LENGTH 100
 
+/* int send_timestamp(int sockfd) { */
+/*  */
+/*     struct timespec tp; */
+/*     clock_gettime(CLOCK_REALTIME, &tp); */
+/*     if(send(sockfd, buffer, sizeof(buffer), 0) == -1) { */
+/*         return false; */
+/*     } */
+/*  */
+/*     return true; */
+/* } */
+
 int main(int argc, char *argv[])
 {
     int sockfd;
@@ -27,19 +40,15 @@ int main(int argc, char *argv[])
     struct hostent *he;
     int numbytes;
     int serverPort;
-    int a = 0;
-    int b = 0;
 
     printf("TCP client example\n\n");
 
-    if (argc != 5) {
-        fprintf(stderr,"Usage: tcpClient serverName serverPort int1 int2\n");
+    if (argc != 3) {
+        fprintf(stderr,"Usage: tcpClient serverName serverPort\n");
         exit(1);
     }
 
     serverPort = atoi(argv[2]);
-    a = atoi(argv[3]);
-    b = atoi(argv[4]);
 
     //Resolv hostname to IP Address
     if ((he=gethostbyname(argv[1])) == NULL) {  // get the host info
@@ -70,21 +79,26 @@ int main(int argc, char *argv[])
 
     connect(sockfd, &their_addr, sizeof(their_addr));
 
-    unsigned char buffer[4];
 
-    // why was buffer *buffer before
-    packData(buffer, a, b);
 
     /* ******************************************************************
     TO BE DONE:  Send data
     ******************************************************************* */
 
-    printf("Sending values: %d, %d\n", a, b);
+    printf("Sending header");
+    struct timespec start, end;
+    clock_gettime(CLOCK_REALTIME, &start);
 
-    if(send(sockfd, buffer, sizeof(buffer), 0) == -1) {
+    if(!send_http_header(sockfd, argv[1])) {
         fprintf(stderr, "Error sending data.\n");
     }
+    clock_gettime(CLOCK_REALTIME, &end);
+    long time = (end.tv_sec-start.tv_sec)*1000000000 + end.tv_nsec - start.tv_nsec;
+    printf("Send time was: %ld nanoseconds\n", time);
 
+    if(!receive_http(sockfd)) {
+        printf("Error receiving data\n");
+    }
 
     /* ******************************************************************
     TO BE DONE:  Close socket
@@ -97,12 +111,24 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-int packData(unsigned char *buffer, unsigned int a, unsigned int b) {
-    /* ******************************************************************
-    TO BE DONE:  pack data
-    ******************************************************************* */
-    buffer[0] = (unsigned char)((a >> 8)&255);
-    buffer[1] = (unsigned char)(a&255);
-    buffer[2] = (unsigned char)((b >> 8)&255);
-    buffer[3] = (unsigned char)(b&255);
+int send_http_header(int sockfd, char *host) {
+    const char string[] = "GET / HTTP/1.0\nHost: ";
+    if (send(sockfd, string, strlen(string), 0) == -1)
+        return 0;
+    if (send(sockfd, host, strlen(host), 0) == -1)
+        return 0;
+    if (send(sockfd, "\n\n", 2, 0) == -1)
+        return 0;
+    return 1;
+}
+
+int receive_http(int sockfd) {
+    char buf[4096];
+    int size;
+    while((size=recv(sockfd, buf, 4096, 0)) != 0) {
+        if(size == -1)
+            return 0;
+        printf("%.*s", size, buf);
+    }
+    return 1;
 }
