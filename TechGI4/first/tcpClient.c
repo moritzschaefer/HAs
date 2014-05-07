@@ -8,6 +8,7 @@
 */
 
 #include <stdio.h>
+#include <time.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <errno.h>
@@ -19,6 +20,17 @@
 #include <netdb.h>
 
 #define MAX_BUFFER_LENGTH 100
+
+/* bool send_timestamp(int sockfd) { */
+/*  */
+/*     struct timespec tp; */
+/*     clock_gettime(CLOCK_REALTIME, &tp); */
+/*     if(send(sockfd, buffer, sizeof(buffer), 0) == -1) { */
+/*         return false; */
+/*     } */
+/*  */
+/*     return true; */
+/* } */
 
 int main(int argc, char *argv[])
 {
@@ -80,10 +92,15 @@ int main(int argc, char *argv[])
     ******************************************************************* */
 
     printf("Sending values: %d, %d\n", a, b);
+    struct timespec start, end;
+    clock_gettime(CLOCK_REALTIME, &start);
 
     if(send(sockfd, buffer, sizeof(buffer), 0) == -1) {
         fprintf(stderr, "Error sending data.\n");
     }
+    clock_gettime(CLOCK_REALTIME, &end);
+    long time = (end.tv_sec-start.tv_sec)*1000000000 + end.tv_nsec - start.tv_nsec;
+    printf("Send time was: %ld nanoseconds", time);
 
 
     /* ******************************************************************
