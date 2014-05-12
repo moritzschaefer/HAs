@@ -1,0 +1,7 @@
+Send time was: 87017 nanoseconds UDP
+
+
+Send time was: 167389 nanoseconds TCP
+
+
+TCP braucht doppelt so lange, da es weder eine Verbindung aufbauen muss, noch auf eine Bestätigung wartet.
