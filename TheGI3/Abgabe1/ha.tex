@@ -1,0 +1,161 @@
+\documentclass[10pt,a4paper,german,landscape]{article} \usepackage[utf8]{inputenc} % damit man im Text äöü verwenden kann
+
+\usepackage{amsmath} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{graphicx} \usepackage{paralist} \usepackage{etoolbox}
+
+\usepackage[ngerman]{babel}
+
+
+\usepackage{semantic}
+\usepackage{xifthen} \usepackage{ifthen} \usepackage{ifmtarg} %\usepackage{graphicx} %wenn man die diagrame lieber so einscannt
+
+\usepackage{paralist} % mehr möglichkeiten bei Aufzählungen
+
+\usepackage{tikz} % tiks bedeutet "tikz ist kein Zeichenprogramm" % wird für die grafiken benötigt
+
+\usepackage{tikz-cd} %Create commutative diagrams with TikZ (http://www.ctan.org/pkg/tikz-cd) \usetikzlibrary{matrix,arrows,decorations.pathmorphing} %kp, copy-pasted
+
+\RequirePackage{etoolbox}
+
+\RequirePackage{ifthen}
+
+\RequirePackage{xifthen}
+
+\RequirePackage{ifmtarg} %TODO: Wie kann ich die TheGi Macros einbinden?
+
+\usepackage{Macros} %TheGi Macros (http://stackoverflow.com/questions/5993965/include-sty-file-from-a-super-subdirectory-of-main-tex-file) %\usepackage{bussproofs}
+
+
+\begin{document}
+
+\title{TheGI III \\
+1. Abgabe }  % Declares the document's title.
+\author{Moritz Schäfer (350651), \\
+Marco Morik (348689), Max Gotthardt(350464)}    % Declares the author's name.
+\date{May 13 2014}   % Deleting this command produces today's date.
+
+\maketitle
+
+Tutor: Die Blonde mit dem Arsch Raum: E-N 187 Uhrzeit: Mittwoch 12-14 Uhr \\
+
+
+\section*{1. Blatt (Hausaufgabe 2)}  % Produces section heading.  Lower-level
+\subsection*{Aufgabe 1.a)}
+
+% aufzaehlung enumerate item
+\begin{itemize}
+  \item $ Studentengruppe \CCSDef \In{betreten}{}.\In{aktiv}{}.\Out{erstellen}{}.\In{verlassen}{}.Studentengruppe $
+  \item
+    $ HAGruppe \CCSDef \In{betreten}{}.\In{reden}{}.\Out{schlechteHas}{}.\In{verlassen}{}.HAGruppe $ \\
+    $ TutGruppe \CCSDef \In{betreten}{}.\In{zuhoeren}{}.\Out{guteHAs}{}.\In{verlassen}{}.TutGruppe $
+
+  \item
+$ Tutor  \CCSDef \In{betreten}{}.\In{verlassen}{}.Tutor $
+\item
+  $ Raum \CCSDef TutorienRaum + HARaum  \\
+TutorienRaum \CCSDef \Out{tutorBetreten}{}.\Out{tutGruppeBetreten}{}.\Out{zuhoeren}{}.\Out{tutGruppeVerlassen}{}.\Out{tutorVerlassen}{}.Raum \\
+HARaum \CCSDef \Out{haGruppeBetreten}{}.\Out{reden}{}.\Out{haGruppeVerlassen}{}.Raum $
+\item
+
+  $ Uni \CCSDef (Raum k \Relabel {\Relabel {Tutor}{tutorBetreten/betreten}}{tutorVerlassen/verlassen} | \\ \Relabel {\Relabel {TutGruppe}{tutGruppeBetreten/betreten}}{tutGruppeVerlassen/verlassen} | \\  \Relabel {\Relabel {HAGruppe}{haGruppeBetreten/betreten}}{haGruppeVerlassen/verlassen}) $
+\end{itemize}
+
+\subsection*{Aufgabe 1.b)}
+\begin{itemize}
+  \item Ask tutor
+\end{itemize}
+
+\subsection*{Aufgabe 2.a)}
+$(\Proc, \Act, \{\CCSTrans{a} | a \in \Act\})$
+mit: \\
+$\Proc = \{T, T_i | i \in [1,8] \}$ \\
+$\Act = \{\In{a}{}, \Out{a}{}, \In{b}{}, \Out{b}{}, \In{\tau}{} \}$ \\
+$
+\CCSTrans{\In{a}{}} = \{(T,T_1), (T,T_5), (T_4,T_6) \} \\
+\CCSTrans{\Out{a}{}} = \{(T,T_4), (T_5,T_6), (T_7,T_8) \} \\
+\CCSTrans{\In{b}{}} = \{(T_1,T_2), (T_3,T_8), (T,T_4), (T_5,T_6),(T_7,T_8) \} \\
+\CCSTrans{\Out{b}{}} = \{(T_1,T_3), (T_2,T_8), (T_5,T_7), (T_6,T_8) \} \\
+\CCSTrans{\In{\tau}{}} = \{(T,T_6), (T_1,T_8), (T_5,T_8) \} \\
+$
+
+\subsection*{Aufgabe 2.b)}
+$
+T \CCSDef (((\In{a}{}.T_1 + \Out{a}{}.T_4) + \In{b}{}.T_4) + \In{a}{}.T_5) + \In{\tau}{}.T_6 \\
+T_1 \CCSDef \In{b}{}.\nil | \Out{b}{}.\nil  \\
+T_4 \CCSDef \In{a}{}.T_6 \\
+T_5 \CCSDef (\Out{a}{}.\nil + \In{b}{}.\nil) | \Out{b}{}.\nil \\
+T_6 \CCSDef \Out{b}{}.\nil
+$
+\subsection*{Aufgabe 2.c)}
+$T \CCSDef (\In{a}{}.\Out{b}{}.\nil | (\In{b}{}.\nil + \Out{a}{}.\nil )) $
+
+\subsection*{Aufgabe 3.a)}
+\begin{displaymath}
+  \inference[REL]
+  {
+    \inference[RES]
+    {
+      \inference[COM2]
+      {
+        \inference[ACT]
+        {
+        }
+        {
+          \Out{b}{}.A \CCSTrans{\Out{b}{}} A
+        }
+      }
+      {
+        B | \Out{b}{}.A \CCSTrans{\Out{b}{}} B | A
+      }
+    }
+    {
+      (B | \Out{b}{}.A) \setminus \{a\} \CCSTrans{\Out{b}{}} ( B | A ) \setminus \{a\}
+    }
+  }
+  {
+    (\Relabel{(B | \Out{b}{}.A) \setminus \{a\})}{a/b}  \CCSTrans{\Out{a}{}} \Relabel{ ( B | A ) \setminus \{a\} }{a/b}
+  }
+\end{displaymath}
+\subsection*{Aufgabe 3.b)}
+Es gibt keine möglichen Aktionen da nach Anwendung der Relabeling COM3 nicht mehr funktioniert da die eine Aktion $a$ nicht mit $\Out{b}{}$ kombiniert werden kann.
+\subsection*{Aufgabe 3.c)}
+\begin{displaymath}
+  \inference[RES]
+  {
+    \inference[COM3]
+    {
+      \inference[CON]
+      {
+        \inference[ACT]
+        {
+        }
+        {
+          \In{a}{}.A \CCSTrans{\In{a}{}} A
+        }
+      }
+      {
+        B \CCSTrans{\In{a}{}} A
+      }
+      &
+      \inference[REL]
+      {
+        \inference[ACT]
+        {}
+        {
+          \Out{b}{}.A \CCSTrans{\Out{b}{}} A
+        }
+      }
+      {
+        \Relabel{\Out{b}{}.A}{a/b} \CCSTrans{\Out{a}{}} \Relabel{ A }{a/b}
+      }
+    }
+    {
+      B | \Relabel{(\Out{b}{}.A)}{a/b} \CCSTrans{\tau}  A | \Relabel{ A }{a/b}
+    }
+  }
+  {
+    (B | \Relabel{(\Out{b}{}.A)}{a/b}) \setminus \{a\}  \CCSTrans{\tau} ( A | \Relabel{ A }{a/b})\setminus \{a\}
+  }
+\end{displaymath}
+\section*{2. Blatt (Hausaufgabe 3)}
+\subsection*{Aufgabe 1.a)}
+\end{document}
