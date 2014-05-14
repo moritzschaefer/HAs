@@ -64,12 +64,12 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    socklen_t client_addr_size = sizeof(struct sockaddr_in);
+    socklen_t client_addr_size;;
 
     char buffer[4];
 
     int n;
-    if((n=recvfrom(sockfd, buffer, sizeof(buffer), 0, (struct sockaddr*)&client_addr, client_addr_size)) != 4) {
+    if((n=recvfrom(sockfd, buffer, sizeof(buffer), 0, (struct sockaddr*)&client_addr, &client_addr_size)) != 4) {
         fprintf(stderr, "Error receiving data. expected 4 bytes but got %d \n", n);
         return 1;
     }
