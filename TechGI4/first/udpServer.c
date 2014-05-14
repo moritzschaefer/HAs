@@ -25,6 +25,7 @@ void unpackData(unsigned char *buffer, unsigned int *a, unsigned int *b);
 int gcd ( int a, int b );
 int main(int argc, char *argv[])
 {
+    int response_result = 1;
     int sockfd;
     struct sockaddr_in own_addr, client_addr; // connector's address information
     struct hostent *he;
@@ -77,13 +78,33 @@ int main(int argc, char *argv[])
     // why was buffer *buffer before
     unsigned int a,b;
     unpackData(buffer, &a, &b);
-    printf("received: %d, %d; GGT: %d\n", a, b, gcd(a,b));
+    int result = gcd(a,b);
+    //don't print but send
+    if(response_result) {
+        packData(buffer, a,b);
+        if((n=sendto(sockfd, buffer, sizeof(buffer), 0, (struct sockaddr*)&client_addr, client_addr_size)) != 4) {
+            fprintf(stderr, "Error sending back data. expected 4 bytes but got %d \n", n);
+            return 1;
+        }
+    } else {
+        printf("received: %d, %d; GGT: %d\n", a, b, result);
+    }
 
     if( close(sockfd) == -1 ) {
         fprintf(stderr, "Error closing socket.\n");
     }
 
     return 0;
+}
+
+int packData(unsigned char *buffer, unsigned int a, unsigned int b) {
+    /* ******************************************************************
+TO BE DONE: pack data
+******************************************************************* */
+    buffer[0] = (unsigned char)((a >> 8)&255);
+    buffer[1] = (unsigned char)(a&255);
+    buffer[2] = (unsigned char)((b >> 8)&255);
+    buffer[3] = (unsigned char)(b&255);
 }
 
 void unpackData(unsigned char *buffer, unsigned int *a, unsigned int *b) {
