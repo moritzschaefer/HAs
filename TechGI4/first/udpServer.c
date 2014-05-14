@@ -81,9 +81,9 @@ int main(int argc, char *argv[])
     int result = gcd(a,b);
     //don't print but send
     if(response_result) {
-        packData(buffer, a,b);
-        if((n=sendto(sockfd, buffer, sizeof(buffer), 0, (struct sockaddr*)&client_addr, client_addr_size)) != 4) {
-            fprintf(stderr, "Error sending back data. expected 4 bytes but got %d \n", n);
+        packData(buffer, result);
+        if((n=sendto(sockfd, buffer, 2, 0, (struct sockaddr*)&client_addr, client_addr_size)) != 2) {
+            fprintf(stderr, "Error sending back data. expected 2 bytes but got %d \n", n);
             return 1;
         }
     } else {
@@ -97,14 +97,12 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-int packData(unsigned char *buffer, unsigned int a, unsigned int b) {
+int packData(unsigned char *buffer, unsigned int a) {
     /* ******************************************************************
 TO BE DONE: pack data
 ******************************************************************* */
     buffer[0] = (unsigned char)((a >> 8)&255);
     buffer[1] = (unsigned char)(a&255);
-    buffer[2] = (unsigned char)((b >> 8)&255);
-    buffer[3] = (unsigned char)(b&255);
 }
 
 void unpackData(unsigned char *buffer, unsigned int *a, unsigned int *b) {

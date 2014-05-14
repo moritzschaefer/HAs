@@ -84,13 +84,21 @@ int main(int argc, char *argv[])
 
     printf("Sending values: %d, %d\n", a, b);
 
-    if(sendto(sockfd, buffer, sizeof(buffer), 0, (const struct sockaddr *) &their_addr, sizeof(their_addr)) == -1) {
-        fprintf(stderr, "Error sending data.\n");
+    socklen_t their_size;
+    int n;
+    if((n = sendto(sockfd, buffer, sizeof(buffer), 0, (const struct sockaddr *) &their_addr, sizeof(their_addr))) != 4) {
+        fprintf(stderr, "Error sending data. expected 4, was %d \n", n);
     }
 
 	clock_gettime(CLOCK_REALTIME, &end);
     long time = (end.tv_sec-start.tv_sec)*1000000000 + end.tv_nsec - start.tv_nsec;
     printf("Send time was: %ld nanoseconds\n", time);
+
+    if(recvfrom(sockfd, buffer, 2, 0, (const struct sockaddr *) &their_addr, &their_size) != 2) {
+        fprintf(stderr, "Error receiving data.\n");
+    }
+    unpackData(buffer, &a);
+    printf("Received result: %d", a);
 
     /* ******************************************************************
     TO BE DONE:  Close socket
@@ -112,6 +120,9 @@ int packData(unsigned char *buffer, unsigned int a, unsigned int b) {
     buffer[2] = (unsigned char)((b >> 8)&255);
     buffer[3] = (unsigned char)(b&255);
 }
-
-
-
+int unpackData(unsigned char *buffer, unsigned int *a) {
+    /* ******************************************************************
+    TO BE DONE:  pack data
+    ******************************************************************* */
+    *a = (buffer[0]<<8) | buffer[1];
+}

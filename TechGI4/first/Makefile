@@ -4,3 +4,4 @@ server:
 
 client:
 	gcc -lnsl -lresolv tcpClient.c -o ownTcpClient
+	gcc -lnsl -lresolv UDPClientAufg6.c -o ownUdpClient
