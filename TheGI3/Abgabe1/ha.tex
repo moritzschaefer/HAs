@@ -201,6 +201,170 @@ Es gibt keine möglichen Aktionen da nach Anwendung der Relabeling COM3 nicht me
     (B | \Relabel{(\Out{b}{}.A)}{a/b}) \setminus \{a\} \CCSTrans{\tau} ( A | \Relabel{ A }{a/b})\setminus \{a\}
   }
 \end{displaymath}
+
+
+\newpage
 \section*{2. Blatt (Hausaufgabe 3)}
-\subsection*{Aufgabe 1.a)}
+\subsection*{Aufgabe 4.a)}
+Gilt.\\
+Sei $ \MC {B}=\{ (P|Q,Q|P)\} \cup Id_{Proc} $\\
+Wir zeigen, dass \MC {B} eine starke Bisimulation ist.
+\begin{itemize}
+\item Betrachte $Id_{Proc} \subseteq \MC {B}$: 
+\subitem - $Id_{Proc}$ ist per Definition eine Bisimulation 
+\item Betrachte $ (P|Q ,Q|P) \in \MC{B}$
+\subitem - Transitionen von P$|$Q: \\
+1. Fall COM1
+\begin{displaymath}
+  \inference[COM1]
+  {
+  \inference[ACT]
+  {}{P \CCSTrans {\alpha} P'}
+  }{P | Q  \CCSTrans {\alpha} P' | Q }
+\end{displaymath}
+\\
+Wähle 
+\begin{displaymath}
+  \inference[COM2]
+  {
+  \inference[ACT]
+  {}{P \CCSTrans {\alpha} P'}
+  }{Q | P  \CCSTrans {\alpha} Q | P' }
+\end{displaymath}
+  und  $ (P'|Q ,Q|P')  \in \MC{B}$ \\ \\
+  2. Fall COM2
+  \begin{displaymath}
+  \inference[COM2]
+  {
+  \inference[ACT]
+  {}{Q \CCSTrans {\alpha} Q'}
+  }{P | Q  \CCSTrans {\alpha} P | Q' }
+\end{displaymath} \\
+Wähle \begin{displaymath}
+  \inference[COM1]
+  {
+  \inference[ACT]
+  {}{Q \CCSTrans {\alpha} Q'}
+  }{Q | P  \CCSTrans {\alpha} Q' | P }
+\end{displaymath}
+	und  $ (P|Q' ,Q'|P)  \in \MC{B}$ \\ \\
+	\item Da \MC {B} eine starke Bisimulation ist und $(P|Q,Q|P) \in $ \MC {B}, können wir folgern, dass $P|Q \bisim Q|P$.
+\end{itemize}
+\subsection*{Aufgabe 4.b)}
+Gilt nicht; Gegenbeispiel: $P \CCSDef a.\nil$ \\
+In diesem Fall kann $(\Out{a}{}.\nil | a.P) \backslash \{a\}$ nach einem $\tau$-Schritt nichts weiteres machen,
+$\tau.P$ jedoch kann einen $\tau$-Schritt und einen a-Schritt machen.\\
+Für den Fall, dass P kein a bzw. $\Out {a}{}$ enthält, gilt die Bisimulation.
+\subsection*{Aufgabe 5:}
+\subsubsection*{a)}
+q1 wird von p3 stark simuliert:\\
+Relation : \MC {P}=${(p3,q1),(p4,q2),(p5,q3),(p1,q4),(p2,q7),(p11,q6),(p10,q5),(p6,q12),(p7,q13),(p9,q11),(p8,q10),(p9,q9),(p8,q8)}$
+\subsubsection*{b)}
+p3 wird von q1 stark simuliert:\\
+Relation : \MC {Q}=${(q1,p3),(q2,p4),(q3,p5),(q4,p1),(q7,p2),(q6,p11),(q5,p10),(q12,p6),(q13,p7),(q11,p9),(q10,p8),(q9,p9),(q8,p8)}$
+\subsubsection*{c)}
+p3 und q1 simulieren sich gegenseitig stark. (Siehe Teil a) und Teil b)) \\
+Die Relation ist schon gegeben mit \MC {P} und \MC {Q}
+\subsubsection*{d)}
+p3 und q1 sind stark bisimilar, mit \MC {B}=\MC {P}$\cup$\MC {Q}. 
+\subsubsection*{e)}
+q12 und p6 sind ebenfalls stark bisimilar.\\
+Gegeben sei \MC {B}=$\{(p6,q12),(p7,q13),(p9,q11),(p8,q10),(p9,q9),(p8,q8)\}$\\
+zZ: B ist eine starke Bisimulation:\\
+\begin{itemize}
+\item Betrachte $(p6,q12) \in $\MC {B}:
+\subitem Transition von p6:\\
+	Für $p6 \CCSTrans {a} p7$ wähle $q12 \CCSTrans {a} q13$ und $(p7,q13)\in$\MC {B}\\
+	Für $p6 \CCSTrans {c} p9$ wähle $q12 \CCSTrans {c} q11$ und $(p9,q11)\in$\MC {B}
+\subitem Transition von q12:\\
+	Für $q12 \CCSTrans {a} q13$ wähle $p6 \CCSTrans {a} p7$ und $(p7,q13)\in$\MC {B}\\
+	Für $q12 \CCSTrans {c} q11$ wähle $p6 \CCSTrans {c} p9$ und $(p9,q11)\in$\MC {B}
+\item Betrachte $(p7,q13) \in $\MC {B}:
+\subitem Transition von p7:\\
+	Für $p7 \CCSTrans {c} p6$ wähle $q13 \CCSTrans {c} q12$ und $(p6,q12)\in$\MC {B}
+\subitem Transition von q13:\\
+	Für $q13 \CCSTrans {c} q12$ wähle $p7 \CCSTrans {c} p6$ und $(p6,q12)\in$\MC {B}
+\item Betrachte $(p9,q11) \in $\MC {B}:
+\subitem Transition von p7: \\
+	Für $p9 \CCSTrans {b} p8$ wähle $q11 \CCSTrans {b} q10$ und $(p8,q10)\in$\MC {B}
+\subitem Transition von q13:\\
+	Für $q11 \CCSTrans {b} q10$ wähle $p9 \CCSTrans {b} p8$ und $(p8,q10)\in$\MC {B}
+\item Betrachte $(p8,q10) \in $\MC {B}:
+\subitem Transition von p7:\\
+	Für $p8 \CCSTrans {b} p9$ wähle $q10 \CCSTrans {b} q9$ und $(p9,q9)\in$\MC {B}
+\subitem Transition von q13:\\
+	Für $q10 \CCSTrans {b} q9$ wähle $p8 \CCSTrans {b} p9$ und $(p9,q9)\in$\MC {B}
+\item Betrachte $(p9,q9) \in $\MC {B}:
+\subitem Transition von p7:\\
+	Für $p9 \CCSTrans {b} p8$ wähle $q9 \CCSTrans {b} q8$ und $(p8,q8)\in$\MC {B}
+\subitem Transition von q13:\\
+	Für $q9 \CCSTrans {b} q8$ wähle $p9 \CCSTrans {b} p8$ und $(p8,q8)\in$\MC {B}
+\item Betrachte $(p8,q8) \in $\MC {B}:
+\subitem Transition von p7:\\
+	Für $p8 \CCSTrans {b} p9$ wähle $q8 \CCSTrans {b} q11$ und $(p9,q11)\in$\MC {B}
+\subitem Transition von q13:\\
+	Für $q8 \CCSTrans {b} q11$ wähle $p8 \CCSTrans {b} p9$ und $(p9,q11)\in$\MC {B}\\ \\
+	Da \MC {B} eine starke Bisimulation ist und (q12,p6) $\in$ \MC {B}, können wir folgern, dass $q12 \bisim p6$.
+\end{itemize}
+\subsection*{Aufgabe 6:}
+\subsubsection*{a)}
+q1 wird von p1 stark simuliert.
+Sei die Relation \MC {Q}=$\{(q1,p1),(q2,p3),(q3,p4),(q4,p5)\}$
+\begin{itemize}
+\item Betrachte (q1,p1)$\in$ \MC {Q}
+\subitem Transition von q1:\\
+Für $q1 \CCSTrans {a} q2$ wähle $p1 \CCSTrans {a} p3$ und (q2,p3) $\in$ \MC {Q}
+\item Betrachte (q2,p3)$\in$ \MC {Q}
+\subitem Transition von q2:\\
+Für $q2 \CCSTrans {c} q3$ wähle $p3 \CCSTrans {c} p4$ und (q3,p4) $\in$ \MC {Q}\\
+Für $q2 \CCSTrans {b} q4$ wähle $p3 \CCSTrans {b} p5$ und (q4,p5) $\in$ \MC {Q}
+\item Betrachte (q3,p4)$\in$ \MC {Q}
+\subitem Transition von q3:\\
+Für $q3 \CCSTrans {a} q1$ wähle $p4 \CCSTrans {a} p1$ und (q1,p1) $\in$ \MC {Q}
+\item Betrachte (q4,p5)$\in$ \MC {Q}
+\subitem Beides Blätter, habe keine Transitionen. 
+\end{itemize}
+\MC {Q} ist die Relation die q1 mit p1 stark simuliert.
+\subsubsection*{b)}
+p1 wird von q1 stark simuliert.
+Sei die Relation \MC {P}=$\{(p1,q1),(p2,q2),(p3,q2),(p4,q3),(p5,q4),(p5,q3)\}$
+\begin{itemize}
+\item Betrachte (p1,q1)$\in$ \MC {P}
+\subitem Transition von p1:\\
+Für $p1 \CCSTrans {a} p2$ wähle $q1 \CCSTrans {a} q2$ und (p2,q2) $\in$ \MC {P}
+Für $p1 \CCSTrans {a} p3$ wähle $q1 \CCSTrans {a} q2$ und (p3,q2) $\in$ \MC {P}
+
+\item Betrachte (p2,q2)$\in$ \MC {P}
+\subitem Transition von p2:\\
+Für $p2 \CCSTrans {c} p5$ wähle $q2 \CCSTrans {c} q3$ und (p5,q3) $\in$ \MC {P}
+
+\item Betrachte (p3,q2)$\in$ \MC {P}
+\subitem Transition von p3:\\
+Für $p3 \CCSTrans {c} p4$ wähle $q2 \CCSTrans {c} q3$ und (p4,q3) $\in$ \MC {P}\\
+Für $p3 \CCSTrans {b} p5$ wähle $q2 \CCSTrans {c} q4$ und (p5,q4) $\in$ \MC {P}
+
+\item Betrachte (p5,q3)$\in$ \MC {P}
+\subitem p5 ist ein Blatt und hat keine weiteren Relationen.
+
+\item Betrachte (p4,q3)$\in$ \MC {P} 
+\subitem Transition von p4:\\
+Für $p4 \CCSTrans {a} p1$ wähle $q3 \CCSTrans {a} q1$ und (p1,q1) $\in$ \MC {P}
+
+
+\item Betrachte (p5,q4)$\in$ \MC {P}
+\subitem p5 ist ein Blatt und hat keine weiteren Relationen.
+
+
+\end{itemize}
+\MC {P} ist die Relation die q1 mit p1 stark simuliert.
+
+\subsubsection*{c)}
+Da p1 von q1 stark simuliert wird (siehe Teil b) und q1 von p1 stark simuliert wird(siehe Teil a), simulieren sie sich gegenseitig stark.
+\subsubsection*{d)}
+p1 und q1 sind nicht stark bisimilar:
+ Angenommen p1 und q1 sind stark bisimilar, dann existiert eine Simulation \MC {B}\\
+ Mit dem Übergang $\CCSTrans {a}$ gelangt man in (p2,q2) $\in$ \MC {B}\\
+ Mit dem Übergang $\CCSTrans {c}$ gelangt man von dort aus nach (p5,q3) $\in$ \MC {B}\\
+ Von q3 gibt es den Übergang $q3 \CCSTrans {a} q1$, jedoch existiert kein Übergang $\CCSTrans {a}$ von p5, daher kann es die Simulation \MC {B} nicht geben.
+ 
 \end{document}
