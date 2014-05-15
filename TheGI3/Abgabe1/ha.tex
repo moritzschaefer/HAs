@@ -3,6 +3,9 @@
 \usepackage{amsmath} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{graphicx} \usepackage{paralist} \usepackage{etoolbox}
 
 \usepackage[ngerman]{babel}
+\usepackage{geometry}
+\geometry{verbose,a4paper,tmargin=25mm,bmargin=25mm,lmargin=15mm,rmargin=20mm}
+\usepackage[arrow, matrix, curve]{xy}
 
 
 \usepackage{semantic}
@@ -25,20 +28,23 @@
 \usepackage{Macros} %TheGi Macros (http://stackoverflow.com/questions/5993965/include-sty-file-from-a-super-subdirectory-of-main-tex-file) %\usepackage{bussproofs}
 
 
+
 \begin{document}
 
 \title{TheGI III \\
-1. Abgabe }  % Declares the document's title.
+1. Abgabe\\
+Tutor:Nadine Rohde Raum: E-N 187 Uhrzeit: Mittwoch 12-14 Uhr \\ } % Declares the document's title.
 \author{Moritz Schäfer (350651), \\
-Marco Morik (348689), Max Gotthardt(350464)}    % Declares the author's name.
-\date{May 13 2014}   % Deleting this command produces today's date.
+Marco Morik (348689), Max Gotthardt(350464)} % Declares the author's name.
+\date{May 13 2014} % Deleting this command produces today's date.
 
 \maketitle
 
-Tutor: Die Blonde mit dem Arsch Raum: E-N 187 Uhrzeit: Mittwoch 12-14 Uhr \\
 
 
-\section*{1. Blatt (Hausaufgabe 2)}  % Produces section heading.  Lower-level
+\newpage
+
+\section*{1. Blatt (Hausaufgabe 2)} % Produces section heading. Lower-level
 \subsection*{Aufgabe 1.a)}
 
 % aufzaehlung enumerate item
@@ -49,20 +55,59 @@ Tutor: Die Blonde mit dem Arsch Raum: E-N 187 Uhrzeit: Mittwoch 12-14 Uhr \\
     $ TutGruppe \CCSDef \In{betreten}{}.\In{zuhoeren}{}.\Out{guteHAs}{}.\In{verlassen}{}.TutGruppe $
 
   \item
-$ Tutor  \CCSDef \In{betreten}{}.\In{verlassen}{}.Tutor $
+$ Tutor \CCSDef \In{betreten}{}.\In{verlassen}{}.Tutor $
 \item
-  $ Raum \CCSDef TutorienRaum + HARaum  \\
+  $ Raum \CCSDef TutorienRaum + HARaum \\
 TutorienRaum \CCSDef \Out{tutorBetreten}{}.\Out{tutGruppeBetreten}{}.\Out{zuhoeren}{}.\Out{tutGruppeVerlassen}{}.\Out{tutorVerlassen}{}.Raum \\
 HARaum \CCSDef \Out{haGruppeBetreten}{}.\Out{reden}{}.\Out{haGruppeVerlassen}{}.Raum $
 \item
 
-  $ Uni \CCSDef (Raum k \Relabel {\Relabel {Tutor}{tutorBetreten/betreten}}{tutorVerlassen/verlassen} | \\ \Relabel {\Relabel {TutGruppe}{tutGruppeBetreten/betreten}}{tutGruppeVerlassen/verlassen} | \\  \Relabel {\Relabel {HAGruppe}{haGruppeBetreten/betreten}}{haGruppeVerlassen/verlassen}) $
+  $ Uni \CCSDef  \Res {(((Raum | \Relabel {Tutor}{tutorBetreten/betreten,tutorVerlassen/verlassen}) | \\ \Relabel {TutGruppe}{tutGruppeBetreten/betreten,tutGruppeVerlassen/verlassen,erstellen/guteHAs} )| \\ \Relabel {HAGruppe}{haGruppeBetreten/betreten,haGruppeVerlassen/verlassen,erstellen/schlechteHAs})\\}{tutGruppeBetreten,tutGruppeVerlasse,haGruppeBetreten,haGruppeVerlassen,reden,zuhoeren,tutorBetreten,tutorVerlassen}  $
 \end{itemize}
 
 \subsection*{Aufgabe 1.b)}
-\begin{itemize}
-  \item Ask tutor
-\end{itemize}
+
+	Zum Kurzfassen:\\
+	$A := \{tutGruppeBetreten,tutGruppeVerlasse,haGruppeBetreten,haGruppeVerlassen,reden,zuhoeren,tutorBetreten,tutorVerlassen\}$\\ \\
+	$HAGruppe \CCSDef \Relabel {\In{betreten}{}.\In{reden}{}.\Out{schlechteHas}{}.\In{verlassen}{}.HAGruppe}{haGruppeBetreten/betreten,haGruppeVerlassen/verlassen,erstellen/schlechteHAs} $ \\
+	$HAGruppe' \CCSDef \Relabel {\In{reden}{}.\Out{schlechteHas}{}.\In{verlassen}{}.HAGruppe}{haGruppeBetreten/betreten,haGruppeVerlassen/verlassen,erstellen/schlechteHAs} $ \\
+	$HAGruppe'' \CCSDef \Relabel {\Out{schlechteHas}{}.\In{verlassen}{}.HAGruppe}{haGruppeBetreten/betreten,haGruppeVerlassen/verlassen,erstellen/schlechteHAs} $ \\
+	$HAGruppe''' \CCSDef \Relabel {\In{verlassen}{}.HAGruppe}{haGruppeBetreten/betreten,haGruppeVerlassen/verlassen,erstellen/schlechteHAs} $ \\ \\
+	$TutGruppe \CCSDef \Relabel {\In{betreten}{}.\In{zuhoeren}{}.\Out{guteHAs}{}.\In{verlassen}{}.TutGruppe}{tutGruppeBetreten/betreten,tutGruppeVerlassen/verlassen,erstellen/guteHAs}$\\
+	$TutGruppe' \CCSDef \Relabel {\In{zuhoeren}{}.\Out{guteHAs}{}.\In{verlassen}{}.TutGruppe}{tutGruppeBetreten/betreten,tutGruppeVerlassen/verlassen,erstellen/guteHAs}$\\
+	$TutGruppe'' \CCSDef \Relabel {\Out{guteHAs}{}.\In{verlassen}{}.TutGruppe}{tutGruppeBetreten/betreten,tutGruppeVerlassen/verlassen,erstellen/guteHAs}$\\
+	$TutGruppe''' \CCSDef \Relabel {\In{verlassen}{}.TutGruppe}{tutGruppeBetreten/betreten,tutGruppeVerlassen/verlassen,erstellen/guteHAs}$ \\ \\
+	$Tutor \CCSDef 	 \Relabel {\In{betreten}{}.\In{verlassen}{}.Tutor }{tutorBetreten/betreten,tutorVerlassen/verlassen}$ \\
+	$Tutor' \CCSDef 	 \Relabel {\In{verlassen}{}.Tutor }{tutorBetreten/betreten,tutorVerlassen/verlassen}$ \\ \\
+$
+TutorienRaum \CCSDef \Out{tutorBetreten}{}.\Out{tutGruppeBetreten}{}.\Out{zuhoeren}{}.\Out{tutGruppeVerlassen}{}.\Out{tutorVerlassen}{}.Raum \\	
+TutorienRaum' \CCSDef \Out{tutGruppeBetreten}{}.\Out{zuhoeren}{}.\Out{tutGruppeVerlassen}{}.\Out{tutorVerlassen}{}.Raum \\	
+TutorienRaum'' \CCSDef \Out{zuhoeren}{}.\Out{tutGruppeVerlassen}{}.\Out{tutorVerlassen}{}.Raum \\	
+TutorienRaum''' \CCSDef \Out{tutGruppeVerlassen}{}.\Out{tutorVerlassen}{}.Raum \\	
+TutorienRaum'''' \CCSDef \Out{tutorVerlassen}{}.Raum \\ \\	
+$	
+$
+HARaum \CCSDef \Out{haGruppeBetreten}{}.\Out{reden}{}.\Out{haGruppeVerlassen}{}.Raum \\
+HARaum' \CCSDef \Out{reden}{}.\Out{haGruppeVerlassen}{}.Raum \\
+HARaum'' \CCSDef \Out{haGruppeVerlassen}{}.Raum \\
+$
+
+  \begin{minipage}{0.4\linewidth-7.112pt}
+   \makebox[\linewidth]{
+    \begin{xy}
+      \xymatrix
+      {
+      & \Pro{Uni} \ar[dr]^{\In{\tau}{}} \ar[dl]^{\In{\tau}{}} &  \\
+      \Pro{(TutorienRaum' |Tutor' |TutGruppe |HAGruppe) \backslash A  } \ar[d]^{\In{\tau}{}} & & \Pro{ (HARaum'|Tutor|TutGruppe|HAGruppe') \backslash A} \ar[d]^{\In{\tau}{}}\\
+      \Pro{(TutorienRaum'' |Tutor' |TutGruppe' |HAGruppe) \backslash A  }\ar[d]^{\In{\tau}{}}& & \Pro{ (HARaum''|Tutor|TutGruppe|HAGruppe'') \backslash A} \ar[d]^{\Out{erstellen}{}} \\
+      \Pro{(TutorienRaum''' |Tutor' |TutGruppe'' |HAGruppe) \backslash A  }\ar[d]^{\Out{erstellen}{}}& & \Pro{ (HARaum''|Tutor|TutGruppe|HAGruppe''') \backslash A} \ar @/^ 40px/ [luuu]^{\In{\tau}{}}  \\
+      \Pro{(TutorienRaum''' |Tutor' |TutGruppe''' |HAGruppe) \backslash A  }\ar[d]^{\In{\tau}{}}& & \\
+      \Pro{(TutorienRaum'''' |Tutor' |TutGruppe |HAGruppe) \backslash A  } \ar `/20pt[ru] [ruuuuu]_{\In{\tau}{}}& & \\
+      }
+    \end{xy}
+   }
+  \end{minipage}
+  %
 
 \subsection*{Aufgabe 2.a)}
 $(\Proc, \Act, \{\CCSTrans{a} | a \in \Act\})$
@@ -80,7 +125,7 @@ $
 \subsection*{Aufgabe 2.b)}
 $
 T \CCSDef (((\In{a}{}.T_1 + \Out{a}{}.T_4) + \In{b}{}.T_4) + \In{a}{}.T_5) + \In{\tau}{}.T_6 \\
-T_1 \CCSDef \In{b}{}.\nil | \Out{b}{}.\nil  \\
+T_1 \CCSDef \In{b}{}.\nil | \Out{b}{}.\nil \\
 T_4 \CCSDef \In{a}{}.T_6 \\
 T_5 \CCSDef (\Out{a}{}.\nil + \In{b}{}.\nil) | \Out{b}{}.\nil \\
 T_6 \CCSDef \Out{b}{}.\nil
@@ -112,7 +157,7 @@ $T \CCSDef (\In{a}{}.\Out{b}{}.\nil | (\In{b}{}.\nil + \Out{a}{}.\nil )) $
     }
   }
   {
-    (\Relabel{(B | \Out{b}{}.A) \setminus \{a\})}{a/b}  \CCSTrans{\Out{a}{}} \Relabel{ ( B | A ) \setminus \{a\} }{a/b}
+    (\Relabel{(B | \Out{b}{}.A) \setminus \{a\})}{a/b} \CCSTrans{\Out{a}{}} \Relabel{ ( B | A ) \setminus \{a\} }{a/b}
   }
 \end{displaymath}
 \subsection*{Aufgabe 3.b)}
@@ -149,11 +194,11 @@ Es gibt keine möglichen Aktionen da nach Anwendung der Relabeling COM3 nicht me
       }
     }
     {
-      B | \Relabel{(\Out{b}{}.A)}{a/b} \CCSTrans{\tau}  A | \Relabel{ A }{a/b}
+      B | \Relabel{(\Out{b}{}.A)}{a/b} \CCSTrans{\tau} A | \Relabel{ A }{a/b}
     }
   }
   {
-    (B | \Relabel{(\Out{b}{}.A)}{a/b}) \setminus \{a\}  \CCSTrans{\tau} ( A | \Relabel{ A }{a/b})\setminus \{a\}
+    (B | \Relabel{(\Out{b}{}.A)}{a/b}) \setminus \{a\} \CCSTrans{\tau} ( A | \Relabel{ A }{a/b})\setminus \{a\}
   }
 \end{displaymath}
 \section*{2. Blatt (Hausaufgabe 3)}
