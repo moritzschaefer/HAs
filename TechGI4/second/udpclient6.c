@@ -86,15 +86,16 @@ int main(int argc, char *argv[])
             keys[i]=a;
             b=rand();
         }
-        if(24<i<50||74<i){
+        if((24<i&& i<50)||74<i){
             strcpy(string ,"GET");
             a=keys[i % 25];
             b=0;
         }
-        if(49<i<75){
+        if(49<i && i<75){
             strcpy(string ,"DEL");
             a=0;
             b=0;
+            printf("Dasklappt");
         }
         packData(buffer,string, a, b);
 
