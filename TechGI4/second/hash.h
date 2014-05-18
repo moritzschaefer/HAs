@@ -13,7 +13,7 @@ struct element{
 
 short int hash(short int key) {
     // return the hash function
-    int val = (((3+key)*5+100)/3)%TABLE_SIZE;
+    short int val = (((3+key)*5+100)/3)%TABLE_SIZE;
     if(val < 0)
         val *= -1;
     assert(val <= 255);
@@ -23,7 +23,7 @@ short int hash(short int key) {
 
 short int sound(short int key) {
     //return the next option
-    int val = (key+1)%TABLE_SIZE;
+    short int val = (key+1)%TABLE_SIZE;
     assert(val <= 255);
     assert(val >= 0);
     return val;

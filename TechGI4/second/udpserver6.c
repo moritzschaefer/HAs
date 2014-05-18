@@ -8,6 +8,7 @@
 ############################################################################
 */
 
+// Hash table server
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -18,14 +19,15 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <netdb.h>
+#include "hash.h"
 
 #define MAX_BUFFER_LENGTH 100
 
-void unpackData(unsigned char *buffer, unsigned int *a, unsigned int *b);
-int gcd ( int a, int b );
+int packData(unsigned char *buffer, char *command, short int key, short int value);
+void unpackData(unsigned char *buffer, char *command, short int *key, short int *value);
+
 int main(int argc, char *argv[])
 {
-    int response_result = 1;
     int sockfd;
     struct sockaddr_in own_addr, client_addr; // connector's address information
     struct hostent *he;
@@ -34,14 +36,13 @@ int main(int argc, char *argv[])
     printf("UDP server example\n\n");
 
     if (argc != 2) {
-        fprintf(stderr,"Usage: tcpServer udpPort\n");
+        fprintf(stderr,"Usage: %s udpPort\n", argv[0]);
         exit(1);
     }
 
     udpPort = atoi(argv[1]);
 
-    // first udp
-
+    //bring up server
     sockfd = socket(AF_INET, SOCK_DGRAM, IPPROTO_IP);
     if(sockfd == -1) {
         fprintf(stderr, "Error creating socket\n");
@@ -67,20 +68,19 @@ int main(int argc, char *argv[])
 
     socklen_t client_addr_size;;
 
-    char buffer[4];
+    char buffer[8];
 
     int n;
-    if((n=recvfrom(sockfd, buffer, sizeof(buffer), 0, (struct sockaddr*)&client_addr, &client_addr_size)) != 4) {
-        fprintf(stderr, "Error receiving data. expected 4 bytes but got %d \n", n);
+    if((n=recvfrom(sockfd, buffer, sizeof(buffer), 0, (struct sockaddr*)&client_addr, &client_addr_size)) != 8) {
+        fprintf(stderr, "Error receiving data. expected 8 bytes but got %d \n", n);
         return 1;
     }
 
-    // why was buffer *buffer before
-    unsigned int a,b;
+    short int key, value;
+    char command[4];
     unpackData(buffer, &a, &b);
     int result = gcd(a,b);
     //don't print but send
-    if(response_result) {
         packData(buffer, result);
         if((n=sendto(sockfd, buffer, 2, 0, (struct sockaddr*)&client_addr, client_addr_size)) != 2) {
             fprintf(stderr, "Error sending back data. expected 2 bytes but got %d \n", n);
@@ -97,26 +97,16 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-int packData(unsigned char *buffer, unsigned int a) {
-    /* ******************************************************************
-TO BE DONE: pack data
-******************************************************************* */
-    buffer[0] = (unsigned char)((a >> 8)&255);
-    buffer[1] = (unsigned char)(a&255);
+// writes 4 bytes command, 2 bytes key, 2 bytes value to buffer
+int packData(unsigned char *buffer, char *command, short int key, short int value) {
+    *((short *)(buffer+4)) = key;
+    *((short *)(buffer+6)) = value;
+    memcpy(buffer, command, 4);
 }
 
-void unpackData(unsigned char *buffer, unsigned int *a, unsigned int *b) {
-    /* ******************************************************************
-       TO BE DONE:  pack data
-     ******************************************************************* */
-    *a = (buffer[0]<<8) | buffer[1];
-    *b = (buffer[2]<<8) | buffer[3];
-}
-
-int gcd ( int a, int b ) {
-    int c;
-    while ( a != 0 ) {
-        c = a; a = b%a;  b = c;
-    }
-    return b;
+// reads 4 bytes command, 2 bytes key, 2 bytes value from buffer
+void unpackData(unsigned char *buffer, char *command, short int *key, short int *value) {
+    *key = *((short *)(buffer+4));
+    *value = *((short *)(buffer+6));
+    memcpy(command, buffer, 4);
 }
