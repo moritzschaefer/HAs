@@ -400,4 +400,41 @@ Somit sind q und r nicht schwach Bisimilar.
 Da p und r schwach Bisimilar sind ( Teil a) , und q und r nicht schwach Bisimilar sind (Teil b), können p und r nicht schwach bisimilar sein. \\
 Angenommen es gäbe die schwache Bisimulation $\MC {B}$ mit $(p,r) \in  \MC {B}$ dann könnte man mit $\MC {R}$ eine schwache Bisimulation für q und r erzeugen.\\
 Diese sind jedoch nicht Bisimilar. Daher kann es keine Bisimulation  $\MC {B}$ geben.
+\subsection*{Aufgabe 8}
+\subsubsection*{a)}
+  \begin{minipage}{0.4\linewidth-7.112pt}
+   \makebox[\linewidth]{
+    \begin{xy}
+      \xymatrix
+      {
+      \Pro{T_1} \ar @/^ 10px/ [r]^{\In{a}{}} \ar[d]^{\In{b}{}}& \Pro{T_2} \ar [l]^{\In{a}{}} \ar[dl]^{\In{b}{}}\\
+      \Pro{T_3} & \\
+      }
+    \end{xy}
+   }
+  \end{minipage}
+  
+\subsubsection*{b)}
+Proc = $\{C_i| i \in [1,5] \}$\\
+$\MC {A} = \{a,b\}$\\
+$\CCSTrans {a} =\{(C_1,C_3),(C_2,C_4)\}$\\
+$\CCSTrans {b} =\{(C_3,C_5),(C_4,C_5)\}$\\
+$\CCSTrans {\Out{a}{}} =\{(C_1,C_3),(C_2,C_4)\}$\\
+$\CCSTrans {\Out{b}{}} =\{(C_1,C_3),(C_2,C_4)\}$\\
+$\CCSTrans {\tau } =\{(C_1,C_5),(C_2,C_5)\}$\\
+
+\subsubsection*{c)}
+
+Zusätzlich zum Bestehenden LTS kommen folgende Übergänge:\\
+$\CCSTrans{\tau } 2 = \{ (A_2,A_1),(A_2,A_6),(A_2,A_5)\}$\\
+Es entsteht dann folgendes LTS:\\
+Proc = $\{A_i| i \in [1,7] \}$\\
+$\MC {A} = \{a,b\}$\\
+$\CCSTrans {a} =\{(A_1,A_3),(A_5,A_4)\}$\\
+$\CCSTrans {b} =\{(A_3,A_7)\}$\\
+$\CCSTrans {\Out{a}{}} =\emptyset$\\
+$\CCSTrans {\Out{b}{}} =\emptyset$\\
+$\CCSTrans {\tau } =\{(A_4,A_3),(A_6,A_5), (A_2,A_1),(A_2,A_6),(A_2,A_5)\}$\\
+
+
 \end{document}
