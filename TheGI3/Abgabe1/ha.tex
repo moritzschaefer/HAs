@@ -203,6 +203,10 @@ Es gibt keine möglichen Aktionen da nach Anwendung der Relabeling COM3 nicht me
 \end{displaymath}
 
 
+
+
+
+
 \newpage
 \section*{2. Blatt (Hausaufgabe 3)}
 \subsection*{Aufgabe 4.a)}
@@ -367,4 +371,33 @@ p1 und q1 sind nicht stark bisimilar:
  Mit dem Übergang $\CCSTrans {c}$ gelangt man von dort aus nach (p5,q3) $\in$ \MC {B}\\
  Von q3 gibt es den Übergang $q3 \CCSTrans {a} q1$, jedoch existiert kein Übergang $\CCSTrans {a}$ von p5, daher kann es die Simulation \MC {B} nicht geben.
  
+ 
+\newpage
+\section*{Blatt 3: Hausaufgabe 4}
+\subsection*{Aufgabe 7}
+\subsubsection*{a)}
+p und q sind schwach Bisimilar, es gibt die Relation $\MC{R} = \{(p,q),(p_1,q_1),(p_2,q_2),(p_4,q_4),(p_5,q_5),(p_2,q_3),(p_3,q_5),(p_1,q_5)\}$
+\begin{compactitem}
+\item \ShowWBisim{\MC{R}}{p,q}{{b,p_1,q_1},{c,p_2,q_2}}{{b,q_1,p_1},{c,q_2,p_2}}
+\item \ShowWBisim{\MC{R}}{p_1,q_1}{{a,p_4,q_4}}{{a,q_2,p_2},{a,q_4,p_4}}
+\item \ShowWBisim{\MC{R}}{p_2,q_2}{{b,p_5,q_5},{c,p_1,q_1}}{{\tau ,q_3,p_2}}
+\item \ShowWBisim{\MC{R}}{p_4,q_4}{{d,p_3,q_5},{\tau ,p_2,q_3}}{{d,q_5,p_3},{\tau ,q_3,p_2}}
+\item \ShowWBisim{\MC{R}}{p_5,q_5}{{a,p_4,q_4}}{{a,q_4,p_4},{a,q_2,p_2}}
+\item \ShowWBisim{\MC{R}}{p_2,q_3}{{b,p_5,q_5},{c,p_1,q_1}}{{b,q_5,p_5},{c,q_1,p_1}}
+\item \ShowWBisim{\MC{R}}{p_3,q_5}{{\tau ,p_1,q_5}}{{a,q_4,p_4},{a,q_2,p_2}}
+\item \ShowWBisim{\MC{R}}{p_1,q_5}{{a,p_4,q_4}}{{a,q_4,p_4},{a,q_2,p_2}}
+
+\end{compactitem}
+Da $\MC{R}$ eine schwache Bisimulation ist und $(p,q) \in \MC{R}$ können wir folgern, dass $p \wbisim q$.
+
+\subsubsection*{b)}
+q und r sind nicht schwach Bisimilar, da $q_4$ ein d machen kann, nichts jedoch in r ein d machen kann. \\
+Wähle also den Pfad $q \CCSTrans {b} q_1 \CCSTrans {a} p_4 \CCSTrans {d} p_3$.\\
+r kann folgendes:  $r \WCCSTrans {b} r_3 \WCCSTrans {a} r_4 \NWCCSTrans {d} r_{*}$,\\
+oder: $r \WCCSTrans {b} r_3 \WCCSTrans {a} r_2 \NWCCSTrans {d} r_{*}$.\\
+Somit sind q und r nicht schwach Bisimilar.
+\subsubsection*{c)}
+Da p und r schwach Bisimilar sind ( Teil a) , und q und r nicht schwach Bisimilar sind (Teil b), können p und r nicht schwach bisimilar sein. \\
+Angenommen es gäbe die schwache Bisimulation $\MC {B}$ mit $(p,r) \in  \MC {B}$ dann könnte man mit $\MC {R}$ eine schwache Bisimulation für q und r erzeugen.\\
+Diese sind jedoch nicht Bisimilar. Daher kann es keine Bisimulation  $\MC {B}$ geben.
 \end{document}
