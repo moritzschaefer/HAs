@@ -25,6 +25,7 @@
 
 int packData(unsigned char *buffer, char *command, short int key, short int value);
 void unpackData(unsigned char *buffer, char *command, short int *key, short int *value);
+void handleCommand(char *command, short int *key, short int *value);
 
 int main(int argc, char *argv[])
 {
@@ -70,24 +71,30 @@ int main(int argc, char *argv[])
 
     char buffer[8];
 
-    int n;
-    if((n=recvfrom(sockfd, buffer, sizeof(buffer), 0, (struct sockaddr*)&client_addr, &client_addr_size)) != 8) {
-        fprintf(stderr, "Error receiving data. expected 8 bytes but got %d \n", n);
-        return 1;
-    }
+    while(1) {
 
-    short int key, value;
-    char command[4];
-    unpackData(buffer, &a, &b);
-    int result = gcd(a,b);
-    //don't print but send
-        packData(buffer, result);
-        if((n=sendto(sockfd, buffer, 2, 0, (struct sockaddr*)&client_addr, client_addr_size)) != 2) {
-            fprintf(stderr, "Error sending back data. expected 2 bytes but got %d \n", n);
+        int n;
+
+        if((n=recvfrom(sockfd, buffer, sizeof(buffer), 0, (struct sockaddr*)&client_addr, &client_addr_size)) != 8) {
+            fprintf(stderr, "Error receiving data. expected 8 bytes but got %d \n", n);
             return 1;
         }
-    } else {
-        printf("received: %d, %d; GGT: %d\n", a, b, result);
+
+        short int key, value;
+        char command[4];
+        unpackData(buffer, command, &key, &value);
+
+        if(!handleCommand(command, &key, &value)) {
+            fprintf(stderr, "Unknown command from client. exiting.");
+            return 1;
+        }
+
+        packData(buffer, command, key, value);
+
+        if((n=sendto(sockfd, buffer, 8, 0, (struct sockaddr*)&client_addr, client_addr_size)) != 8) {
+            fprintf(stderr, "Error sending back data. expected 8 bytes but got %d \n", n);
+            return 1;
+        }
     }
 
     if( close(sockfd) == -1 ) {
@@ -109,4 +116,8 @@ void unpackData(unsigned char *buffer, char *command, short int *key, short int 
     *key = *((short *)(buffer+4));
     *value = *((short *)(buffer+6));
     memcpy(command, buffer, 4);
+}
+// looks which command  is in command, handles it and sets appropriate command, key and value
+bool handleCommand(char *command, short int *key, short int *value) {
+
 }

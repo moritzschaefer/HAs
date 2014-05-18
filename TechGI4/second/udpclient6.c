@@ -99,24 +99,21 @@ int main(int argc, char *argv[])
         }
         packData(buffer,string, a, b);
 
-        /* ******************************************************************
-           TO BE DONE:  Send data
-         ******************************************************************* */
 
         printf("Sending values: %d, %d\n", a, b);
 
         socklen_t their_size;
         if((n = sendto(sockfd, buffer, sizeof(buffer), 0, (const struct sockaddr *) &their_addr, sizeof(their_addr))) != 8) {
-            fprintf(stderr, "Error sending data. expected 4, was %d \n", n);
+            fprintf(stderr, "Error sending data. expected 8, was %d \n", n);
         }
-        if(recvfrom(sockfd, buffer, 2, 0, (const struct sockaddr *) &their_addr, &their_size) != 8) {
+        if(recvfrom(sockfd, buffer, 8, 0, (struct sockaddr *) &their_addr, &their_size) != 8) {
             fprintf(stderr, "Error receiving data.\n");
-        } 
-        unpackData(buffer,&string, &a,&b);
-        if(strcmp(string,"VAL\0")==0) printf("Result Value %d succeed",b);
-        if(strcmp(string,"NOF\0")==0) printf("Key not found");
-        if(strcmp(string,"OK!\0")==0) printf("Insertion succed");
-        if(strcmp(string,"ERR\0")==0) printf("Insertion failed");
+        }
+        unpackData(buffer, string, &a,&b);
+        if(strcmp(string,"VAL")==0) printf("Result Value %d succeed",b);
+        if(strcmp(string,"NOF")==0) printf("Key not found");
+        if(strcmp(string,"OK!")==0) printf("Insertion succed");
+        if(strcmp(string,"ERR")==0) printf("Insertion failed");
 
     }
 
@@ -135,12 +132,13 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-int packData(unsigned char *buffer,char string[], unsigned int a, unsigned int b) {
+int packData(unsigned char *buffer,char *string, unsigned int a, unsigned int b) {
     /* ******************************************************************
        TO BE DONE:  pack data
 a: Key
 b: Value
      ******************************************************************* */
+    // better memcpy or strcpy
     buffer[0] = (unsigned char) string[0];
     buffer[1] = (unsigned char) string[1];
     buffer[2] = (unsigned char) string[2];
@@ -150,14 +148,16 @@ b: Value
     buffer[6] = (unsigned char)((b >> 8)&255);
     buffer[7] = (unsigned char)(b&255);
 }
-int unpackData(unsigned char *buffer,char *string[], unsigned int *a,unsigned int *b) {
+int unpackData(unsigned char *buffer,char *string, unsigned int *a,unsigned int *b) {
     /* ******************************************************************
        TO BE DONE:  pack data
      ******************************************************************* */
-    *string[0] = buffer[0];
-    *string[1] = buffer[1];
-    *string[2] = buffer[2];
-    *string[3] = buffer[3];
+    // better memcpy or strcpy
+    buffer[0] = (unsigned char) string[0];
+    string[0] = buffer[0];
+    string[1] = buffer[1];
+    string[2] = buffer[2];
+    string[3] = buffer[3];
     *a = (buffer[4]<<8) | buffer[5];
     *b = (buffer[6]<<8) | buffer[7];
 }
