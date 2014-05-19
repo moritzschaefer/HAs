@@ -84,7 +84,7 @@ bool delete(struct element *table, short int key){
 }
 
 struct element *initTable(){
-    struct element *table = malloc(sizeof(struct element) * TABLE_SIZE);
+    struct element *table = calloc(sizeof(struct element), TABLE_SIZE);
 	int i;
 	for(i=0; i<TABLE_SIZE; i++){
 		table[i].used  = false;

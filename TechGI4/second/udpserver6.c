@@ -30,6 +30,7 @@ bool handleCommand(struct element *table, char *command, short int *key, short i
 int main(int argc, char *argv[])
 {
     struct element *table = initTable();
+    int x[1000];
     int sockfd;
     struct sockaddr_in own_addr, client_addr; // connector's address information
     struct hostent *he;
@@ -68,7 +69,7 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    socklen_t client_addr_size;;
+    socklen_t client_addr_size;
 
     char buffer[8];
 
@@ -76,7 +77,7 @@ int main(int argc, char *argv[])
 
         int n;
 
-        if((n=recvfrom(sockfd, buffer, sizeof(buffer), 0, (struct sockaddr*)&client_addr, &client_addr_size)) != 8) {
+        if((n=recvfrom(sockfd, (void *)buffer, 8, 0, (struct sockaddr*)&client_addr, &client_addr_size)) != 8) {
             fprintf(stderr, "Error receiving data. expected 8 bytes but got %d \n", n);
             return 1;
         }
@@ -86,13 +87,13 @@ int main(int argc, char *argv[])
         unpackData(buffer, command, &key, &value);
 
         if(!handleCommand(table, command, &key, &value)) {
-            fprintf(stderr, "Unknown command from client. exiting.");
+            fprintf(stderr, "Unknown command from client. exiting: %s", command);
             return 1;
         }
 
         packData(buffer, command, key, value);
 
-        if((n=sendto(sockfd, buffer, 8, 0, (struct sockaddr*)&client_addr, client_addr_size)) != 8) {
+        if((n=sendto(sockfd, (void *)buffer, 8, 0, (struct sockaddr*)&client_addr, client_addr_size)) != 8) {
             fprintf(stderr, "Error sending back data. expected 8 bytes but got %d \n", n);
             return 1;
         }

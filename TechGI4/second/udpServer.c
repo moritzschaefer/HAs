@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
 
     memset(own_addr.sin_zero, '\0', sizeof own_addr.sin_zero);
     //bind socket
-    if(bind(sockfd, &own_addr, sizeof(own_addr)) == -1) {
+    if(bind(sockfd, (const struct sockaddr*)&own_addr, sizeof(own_addr)) == -1) {
         fprintf(stderr, "Error creating socket\n");
         return 1;
     }
