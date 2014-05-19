@@ -23,14 +23,13 @@
 
 #define MAX_BUFFER_LENGTH 100
 
-int packData(unsigned char *buffer, char *command, short int key, short int value);
+void packData(unsigned char *buffer, char *command, short int key, short int value);
 void unpackData(unsigned char *buffer, char *command, short int *key, short int *value);
 bool handleCommand(struct element *table, char *command, short int *key, short int *value);
 
 int main(int argc, char *argv[])
 {
     struct element *table = initTable();
-    int x[1000];
     int sockfd;
     struct sockaddr_in own_addr, client_addr; // connector's address information
     struct hostent *he;
@@ -107,7 +106,7 @@ int main(int argc, char *argv[])
 }
 
 // writes 4 bytes command, 2 bytes key, 2 bytes value to buffer
-int packData(unsigned char *buffer, char *command, short int key, short int value) {
+void packData(unsigned char *buffer, char *command, short int key, short int value) {
     *((short *)(buffer+4)) = key;
     *((short *)(buffer+6)) = value;
     memcpy(buffer, command, 4);
@@ -123,36 +122,32 @@ void unpackData(unsigned char *buffer, char *command, short int *key, short int 
 
 
 bool handleCommand(struct element *table, char *command, short int *key, short int *value) {
-        if(strcmp(command,"GET")==0) {
-		if (get(table,*key,value)){
-			strcpy(command,"OK!");
-		}
-		else{
-			strcpy(command,"ERR");
-		}
-		return true;
-	}
-        else if(strcmp(command,"DEL")==0) {
-		if (delete(table,*key)){
-			strcpy(command, "OK!");
-		}
-		else{
-			strcpy(command, "ERR");
-		}
-		*key=0;
-		*value=0;
-		return true;
-	}
-        else if (strcmp(command,"SET")==0) {
-		if (set(table,*key,*value)){
-			strcpy(command, "VAR");
-		}
-		else {
-			strcpy(command, "NOF");
-		}
-		*key=0;
-		*value=0;
-		return true;
-	}
-	return false;
-}	
+    if(strcmp(command,"GET")==0) {
+        if (get(table,*key,value)){
+            strcpy(command,"VAL");
+        }
+        else{
+            strcpy(command,"NOF");
+        }
+        return true;
+    }
+    else if(strcmp(command,"DEL")==0) {
+        if (delete(table,*key)){
+            strcpy(command, "OK!");
+        }
+        else{
+            strcpy(command, "ERR");
+        }
+        return true;
+    }
+    else if (strcmp(command,"SET")==0) {
+        if (set(table,*key,*value)){
+            strcpy(command, "OK!");
+        }
+        else {
+            strcpy(command, "ERR");
+        }
+        return true;
+    }
+    return false;
+}

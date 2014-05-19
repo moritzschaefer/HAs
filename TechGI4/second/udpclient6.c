@@ -19,6 +19,8 @@
 #include <netdb.h>
 
 #define MAX_BUFFER_LENGTH 100
+void unpackData(unsigned char *buffer, char *command, short int *key, short int *value);
+void packData(unsigned char *buffer, char *command, short int key, short int value);
 
 int main(int argc, char *argv[])
 {
@@ -27,8 +29,8 @@ int main(int argc, char *argv[])
     struct hostent *he;
     int numbytes;
     int serverPort;
-    int a = 0;
-    int b = 0;
+    short int a = 0;
+    short int b = 0;
 
     printf("TCP client example\n\n");
 
@@ -77,14 +79,14 @@ int main(int argc, char *argv[])
     time_t t;
     time(&t);
     srand((unsigned int)t);
-    int keys[25];
+    short int keys[25];
     int n;
     for(i=0;i<100;i++){
         if(i<25) {
             strcpy(string ,"SET");
-            a=rand();
+            a=(short int)rand();
             keys[i]=a;
-            b=rand();
+            b=(short int)rand();
         }
         if((24<i&& i<50)||74<i){
             strcpy(string ,"GET");
@@ -95,12 +97,10 @@ int main(int argc, char *argv[])
             strcpy(string ,"DEL");
             a=0;
             b=0;
-            printf("Dasklappt");
         }
         packData(buffer,string, a, b);
 
-
-        printf("Sending values: %d, %d\n", a, b);
+        printf("Sending values: %d, %d, operation: %s ", a, b, string);
 
         socklen_t their_size;
         if((n = sendto(sockfd, buffer, sizeof(buffer), 0, (const struct sockaddr *) &their_addr, sizeof(their_addr))) != 8) {
@@ -110,10 +110,10 @@ int main(int argc, char *argv[])
             fprintf(stderr, "Error receiving data.\n");
         }
         unpackData(buffer, string, &a,&b);
-        if(strcmp(string,"VAL")==0) printf("Result Value %d succeed",b);
-        if(strcmp(string,"NOF")==0) printf("Key not found");
-        if(strcmp(string,"OK!")==0) printf("Insertion succed");
-        if(strcmp(string,"ERR")==0) printf("Insertion failed");
+        if(strcmp(string,"VAL")==0) printf("Result Value %d succeed\n",b);
+        if(strcmp(string,"NOF")==0) printf("Key not found\n");
+        if(strcmp(string,"OK!")==0) printf("Operation succed\n");
+        if(strcmp(string,"ERR")==0) printf("Operation failed\n");
 
     }
 
@@ -132,7 +132,21 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-int packData(unsigned char *buffer,char *string, unsigned int a, unsigned int b) {
+// writes 4 bytes command, 2 bytes key, 2 bytes value to buffer
+void packData(unsigned char *buffer, char *command, short int key, short int value) {
+    *((short *)(buffer+4)) = key;
+    *((short *)(buffer+6)) = value;
+    memcpy(buffer, command, 4);
+}
+
+// reads 4 bytes command, 2 bytes key, 2 bytes value from buffer
+void unpackData(unsigned char *buffer, char *command, short int *key, short int *value) {
+    *key = *((short *)(buffer+4));
+    *value = *((short *)(buffer+6));
+    memcpy(command, buffer, 4);
+}
+
+int packDataOld(unsigned char *buffer,char *string, unsigned int a, unsigned int b) {
     /* ******************************************************************
        TO BE DONE:  pack data
 a: Key
@@ -148,7 +162,7 @@ b: Value
     buffer[6] = (unsigned char)((b >> 8)&255);
     buffer[7] = (unsigned char)(b&255);
 }
-int unpackData(unsigned char *buffer,char *string, unsigned int *a,unsigned int *b) {
+int unpackDataOld(unsigned char *buffer,char *string, unsigned int *a,unsigned int *b) {
     /* ******************************************************************
        TO BE DONE:  pack data
      ******************************************************************* */
