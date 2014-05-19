@@ -25,11 +25,12 @@
 
 int packData(unsigned char *buffer, char *command, short int key, short int value);
 void unpackData(unsigned char *buffer, char *command, short int *key, short int *value);
-void handleCommand(char *command, short int *key, short int *value);
+bool handleCommand(struct element *table, char *command, short int *key, short int *value);
 
 int main(int argc, char *argv[])
 {
     struct element *table = initTable();
+    int x[1000];
     int sockfd;
     struct sockaddr_in own_addr, client_addr; // connector's address information
     struct hostent *he;
@@ -63,12 +64,12 @@ int main(int argc, char *argv[])
 
     memset(own_addr.sin_zero, '\0', sizeof own_addr.sin_zero);
     //bind socket
-    if(bind(sockfd, &own_addr, sizeof(own_addr)) == -1) {
+    if(bind(sockfd, (const struct sockaddr *)&own_addr, sizeof(own_addr)) == -1) {
         fprintf(stderr, "Error creating socket\n");
         return 1;
     }
 
-    socklen_t client_addr_size;;
+    socklen_t client_addr_size = sizeof(struct sockaddr);
 
     char buffer[8];
 
@@ -76,7 +77,7 @@ int main(int argc, char *argv[])
 
         int n;
 
-        if((n=recvfrom(sockfd, buffer, sizeof(buffer), 0, (struct sockaddr*)&client_addr, &client_addr_size)) != 8) {
+        if((n=recvfrom(sockfd, (void *)buffer, 8, 0, (struct sockaddr*)&client_addr, &client_addr_size)) != 8) {
             fprintf(stderr, "Error receiving data. expected 8 bytes but got %d \n", n);
             return 1;
         }
@@ -85,14 +86,14 @@ int main(int argc, char *argv[])
         char command[4];
         unpackData(buffer, command, &key, &value);
 
-        if(!handleCommand(command, &key, &value)) {
-            fprintf(stderr, "Unknown command from client. exiting.");
+        if(!handleCommand(table, command, &key, &value)) {
+            fprintf(stderr, "Unknown command from client. exiting: %s", command);
             return 1;
         }
 
         packData(buffer, command, key, value);
 
-        if((n=sendto(sockfd, buffer, 8, 0, (struct sockaddr*)&client_addr, client_addr_size)) != 8) {
+        if((n=sendto(sockfd, (void *)buffer, 8, 0, (struct sockaddr*)&client_addr, client_addr_size)) != 8) {
             fprintf(stderr, "Error sending back data. expected 8 bytes but got %d \n", n);
             return 1;
         }
@@ -153,5 +154,5 @@ bool handleCommand(struct element *table, char *command, short int *key, short i
 		*value=0;
 		return true;
 	}
-	return false;	
-}
+	return false;
+}	
