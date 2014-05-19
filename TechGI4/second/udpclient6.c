@@ -95,7 +95,7 @@ int main(int argc, char *argv[])
         }
         if(49<i && i<75){
             strcpy(string ,"DEL");
-            a=0;
+            a=keys[i % 25];
             b=0;
         }
         packData(buffer,string, a, b);
