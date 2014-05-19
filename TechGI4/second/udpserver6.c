@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    socklen_t client_addr_size;
+    socklen_t client_addr_size = sizeof(struct sockaddr);
 
     char buffer[8];
 
