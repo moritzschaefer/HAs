@@ -29,6 +29,7 @@ void handleCommand(char *command, short int *key, short int *value);
 
 int main(int argc, char *argv[])
 {
+    struct element *table = initTable();
     int sockfd;
     struct sockaddr_in own_addr, client_addr; // connector's address information
     struct hostent *he;
@@ -118,6 +119,39 @@ void unpackData(unsigned char *buffer, char *command, short int *key, short int 
     memcpy(command, buffer, 4);
 }
 // looks which command  is in command, handles it and sets appropriate command, key and value
-bool handleCommand(char *command, short int *key, short int *value) {
 
+
+bool handleCommand(struct element *table, char *command, short int *key, short int *value) {
+        if(strcmp(command,"GET")==0) {
+		if (get(table,*key,value)){
+			strcpy(command,"OK!");
+		}
+		else{
+			strcpy(command,"ERR");
+		}
+		return true;
+	}
+        else if(strcmp(command,"DEL")==0) {
+		if (delete(table,*key)){
+			strcpy(command, "OK!");
+		}
+		else{
+			strcpy(command, "ERR");
+		}
+		*key=0;
+		*value=0;
+		return true;
+	}
+        else if (strcmp(command,"SET")==0) {
+		if (set(table,*key,*value)){
+			strcpy(command, "VAR");
+		}
+		else {
+			strcpy(command, "NOF");
+		}
+		*key=0;
+		*value=0;
+		return true;
+	}
+	return false;	
 }
