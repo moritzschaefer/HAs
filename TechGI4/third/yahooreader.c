@@ -20,7 +20,7 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 
-#define MAX_BUFFER_LENGTH 1000000000
+#define MAX_BUFFER_LENGTH 1000000
 char *buffer;
 
 int main(int argc, char *argv[])
@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
     printf("fetch temperature from yahoo");
 
     //Resolv hostname to IP Address
-    if ((he=gethostbyname(argv[1])) == NULL) {  // get the host info
+    if ((he=gethostbyname(host)) == NULL) {  // get the host info
         herror("gethostbyname");
         exit(1);
     }
@@ -124,7 +124,7 @@ int receive_http(int sockfd, int *temperature) {
     char *pos = strstr(buffer, "yweather:condition");
     if(pos==NULL)
         return 0;
-    pos = strstr(pos, "temp=\"");
+    pos = strstr(pos, "temp=\"")+strlen("temp=\"");
     char *secondpos = strstr(pos, "\"");
     secondpos[0] = '\0';
     *temperature = atoi(pos);
