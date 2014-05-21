@@ -118,12 +118,17 @@ int send_http_header(int sockfd, char *host, char *request) {
 }
 
 int receive_http(int sockfd, int *temperature) {
-    int size=recv(sockfd, buffer, MAX_BUFFER_LENGTH, 0);
-    if(size == -1)
-        return 0;
+    int size=0;
+    int current_pos=0;
+    while((size=recv(sockfd, buffer+current_pos, MAX_BUFFER_LENGTH-current_pos, 0)) != 0 ) {
+        if(size == -1)
+            return 0;
+    }
     char *pos = strstr(buffer, "yweather:condition");
-    if(pos==NULL)
+    if(pos==NULL) {
+        printf( "where is it");
         return 0;
+    }
     pos = strstr(pos, "temp=\"")+strlen("temp=\"");
     char *secondpos = strstr(pos, "\"");
     secondpos[0] = '\0';
