@@ -14,6 +14,7 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <sys/time.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <netdb.h>
@@ -55,6 +56,8 @@ int main(int argc, char *argv[])
      ******************************************************************* */
 
     sockfd = socket(AF_INET, SOCK_DGRAM, IPPROTO_IP);
+    // make socket nonblocking
+    //fcntl(sockfd, F_SETFL, O_NONBLOCK);
     if(sockfd == -1) {
         fprintf(stderr, "Error creating socket\n");
         return 1;}
@@ -99,13 +102,26 @@ int main(int argc, char *argv[])
             b=0;
         }
         packData(buffer,string, a, b);
-
-        printf("Sending values: %d, %d, operation: %s ", a, b, string);
-
+        struct timeval waittime;
+        fd_set readfds;
         socklen_t their_size;
-        if((n = sendto(sockfd, buffer, sizeof(buffer), 0, (const struct sockaddr *) &their_addr, sizeof(their_addr))) != 8) {
-            fprintf(stderr, "Error sending data. expected 8, was %d \n", n);
-        }
+
+        do {
+            printf("Sending values: %d, %d, operation: %s \n", a, b, string);
+
+            if((n = sendto(sockfd, buffer, sizeof(buffer), 0, (const struct sockaddr *) &their_addr, sizeof(their_addr))) != 8) {
+                fprintf(stderr, "Error sending data. expected 8, was %d \n", n);
+
+            }
+            FD_ZERO(&readfds);
+            FD_SET(sockfd, &readfds);
+            waittime.tv_usec = 0; waittime.tv_sec = 2;
+            if(select(sockfd+1, &readfds, NULL, NULL, &waittime) == -1) {
+                fprintf(stderr, "Error in select\n");
+                exit(1);
+            }
+        } while(!FD_ISSET(sockfd,  &readfds));
+
         if(recvfrom(sockfd, buffer, 8, 0, (struct sockaddr *) &their_addr, &their_size) != 8) {
             fprintf(stderr, "Error receiving data.\n");
         }
