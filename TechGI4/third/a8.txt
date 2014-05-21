@@ -1,0 +1,5 @@
+a) Da es ein Standard ist den Viele verwenden und der es einfach macht Daten auszutauschen. Zum Beispiel übernimmt  HTTP die Aufgabe des Verbindungsauf- und abbaus von TCP, was die Komplexität mindert.
+b) curl -v liefert folgenden HTTP Header: Cache-Control: max-age=200, public. Die Response kann also 200 Sekunden gespeichert werden. Eine sehr kurze Zeit, die daher kommt, dass sich das Wetter schnell ändert.
+c) Ja, da der Server (zu einem Zeitpunkt) für jeden Request die gleiche Antwort zurückgibt. Das heißt er merkt sich keinen Zustand zu einzelnen Requests.
+d) Sie erfüllt nicht alle Konzepte von RESTfull. Z. B. "modifiable" ist nicht vorhanden. Die Ressourcen werden von Yahoo vorgegeben und sind immer nur abrufbar.
+

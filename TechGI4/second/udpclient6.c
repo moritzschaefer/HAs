@@ -105,9 +105,11 @@ int main(int argc, char *argv[])
         socklen_t their_size;
         if((n = sendto(sockfd, buffer, sizeof(buffer), 0, (const struct sockaddr *) &their_addr, sizeof(their_addr))) != 8) {
             fprintf(stderr, "Error sending data. expected 8, was %d \n", n);
+            continue;
         }
         if(recvfrom(sockfd, buffer, 8, 0, (struct sockaddr *) &their_addr, &their_size) != 8) {
             fprintf(stderr, "Error receiving data.\n");
+            continue;
         }
         unpackData(buffer, string, &a,&b);
         if(strcmp(string,"VAL")==0) printf("Result Value %d succeed\n",b);
