@@ -90,7 +90,7 @@ int main(int argc, char *argv[])
     if(!receive_http(sockfd, &temperature)) {
         printf("Error receiving data\n");
     }
-    printf("Current temperature in Berlin is %d", temperature);
+    printf("Current temperature in Berlin is %d\n", temperature);
 
     /* ******************************************************************
     TO BE DONE:  Close socket
