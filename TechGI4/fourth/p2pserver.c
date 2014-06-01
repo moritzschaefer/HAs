@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
         printf("UDP Hash server example\n\n");
 
         if (argc != 9) {
-                fprintf(stderr,"Usage: %s udpPort, NodeID ,PreNode & FollowNode: NodeID, IP, Port  \n", argv[0]);
+                fprintf(stderr,"Usage: %s udpPort NodeID PreNodeID PreNodeIP PreNodePort  FollowNodeID FollowNodeIP FollowNodePort \n", argv[0]);
                 exit(1);
         }
 
@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
 
         follow_addr.sin_family = AF_INET;
         follow_addr.sin_port = htons(followPort);
-        inet_pton(AF_INT, argv[7], &(follow_addr.sin_addr));
+        inet_pton(AF_INET, argv[7], &(follow_addr.sin_addr));
         memset(follow_addr.sin_zero, '\0', sizeof follow_addr.sin_zero);
 
 
@@ -115,7 +115,7 @@ int main(int argc, char *argv[])
                         }
                         client_addr.sin_family = AF_INET;
                         client_addr.sin_port = htons(port);
-                        client_addr.sin_addr = htonl(IP);
+                        client_addr.sin_addr.s_addr = htonl(IP);
 
                         memset(client_addr.sin_zero, '\0', sizeof client_addr.sin_zero);
                         client_addr_size= sizeof(client_addr);
