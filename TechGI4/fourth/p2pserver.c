@@ -36,8 +36,8 @@ int main(int argc, char *argv[])
         int udpPort;
         int followPort;
         int prePort;
-        int ownID , preID, followID,ueberhang;
-        printf("UDP server example\n\n");
+        int ownID, preID, followID, overflow;
+        printf("UDP Hash server example\n\n");
 
         if (argc != 9) {
                 fprintf(stderr,"Usage: %s udpPort, NodeID ,PreNode & FollowNode: NodeID, IP, Port  \n", argv[0]);
@@ -49,10 +49,10 @@ int main(int argc, char *argv[])
         prePort   =atoi(argv[5]);
         ownID = atoi(argv[2]);
         preID = atoi(argv[3]);
-        followID = atoi(argv[6]);	
-        ueberhang=0;
+        followID = atoi(argv[6]);
+        overflow=0;
         if(preID>ownID){
-                ueberhang=1;
+                overflow=1;
         }
         //bring up server
         sockfd = socket(AF_INET, SOCK_DGRAM, IPPROTO_IP);
@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
 
 
         //Resolv FollowNode to IP Address
-        
+
 
         follow_addr.sin_family = AF_INET;
         follow_addr.sin_port = htons(followPort);
@@ -108,17 +108,17 @@ int main(int argc, char *argv[])
                 char command[4];
                 unpackData(buffer, command, &key, &value, &port, &IP);
                 int hashedkey = hash(key);
-                if((ueberhang && (hashedkey<ownID || hashedkey>preID)) || (hashedkey<ownID && hashedkey>preID)){
+                if((overflow && (hashedkey<ownID || hashedkey>preID)) || (hashedkey<ownID && hashedkey>preID)){
                         if(!handleCommand(table, command, &key, &value)) {
                                 fprintf(stderr, "Unknown command from client. exiting: %s", command);
                                 return 1;
                         }
                         client_addr.sin_family = AF_INET;
                         client_addr.sin_port = htons(port);
-                        inet_pton(AF_INET,(const char *) htonl(IP),&client_addr.sin_addr);
+                        client_addr.sin_addr = htonl(IP);
+
                         memset(client_addr.sin_zero, '\0', sizeof client_addr.sin_zero);
                         client_addr_size= sizeof(client_addr);
-
 
 
                         packData(buffer, command, key, value, port, IP);
