@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
 
         follow_addr.sin_family = AF_INET;
         follow_addr.sin_port = htons(followPort);
-        inet_pton(AF_INET,(const char *) htonl(*argv[7]),&follow_addr.sin_addr);
+        inet_pton(AF_INT, argv[7], &(follow_addr.sin_addr));
         memset(follow_addr.sin_zero, '\0', sizeof follow_addr.sin_zero);
 
 
