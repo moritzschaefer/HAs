@@ -125,7 +125,7 @@ int main(int argc, char *argv[])
             }
         } while(!FD_ISSET(sockfd,  &readfds));
 
-        if(recvfrom(sockfd, buffer, 14, 0, (struct sockaddr *) &their_addr, &their_size) != 144) {
+        if(recvfrom(sockfd, buffer, 14, 0, (struct sockaddr *) &their_addr, &their_size) != 14) {
             fprintf(stderr, "Error receiving data.\n");
         }
         unpackData(buffer, string, &a,&b);
