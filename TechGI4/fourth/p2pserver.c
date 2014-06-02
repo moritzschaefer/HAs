@@ -136,6 +136,8 @@ int main(int argc, char *argv[])
             }
         }
         else{
+            packData(buffer, command, key, value, port, IP);
+
             if((n=sendto(sockfd, (void *)buffer, 14, 0, (struct sockaddr*)&follow_addr, sizeof(follow_addr))) != 14) {
                 fprintf(stderr, "Error sending data to next Peer. expected 14 bytes but got %d \n", n);
                 return 1;
