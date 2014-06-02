@@ -108,7 +108,12 @@ int main(int argc, char *argv[])
                 char command[4];
                 unpackData(buffer, command, &key, &value, &port, &IP);
                 int hashedkey = hash(key);
-                if((overflow && (hashedkey<ownID || hashedkey>preID)) || (hashedkey<ownID && hashedkey>preID)){
+                if(port==0){
+			port=client_addr.sin_port;
+			IP= client_addr.sin_addr.s_addr;
+		}
+
+		if((overflow && (hashedkey<ownID || hashedkey>preID)) || (hashedkey<ownID && hashedkey>preID)){
                         if(!handleCommand(table, command, &key, &value)) {
                                 fprintf(stderr, "Unknown command from client. exiting: %s", command);
                                 return 1;
