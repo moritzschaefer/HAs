@@ -110,7 +110,7 @@ int main(int argc, char *argv[])
         int hashedkey = hash(key);
         if(port==0){
             port=ntohs(client_addr.sin_port);
-            IP= ntohs(client_addr.sin_addr.s_addr);
+            IP= ntohl(client_addr.sin_addr.s_addr);
         }
 
         if((overflow && (hashedkey<ownID || hashedkey>preID)) || (hashedkey<ownID && hashedkey>preID)){
