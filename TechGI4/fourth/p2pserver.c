@@ -128,7 +128,10 @@ int main(int argc, char *argv[])
             packData(buffer, command, key, value, port, IP);
 
             if((n=sendto(sockfd, (void *)buffer, 14, 0, (struct sockaddr*)&client_addr, sizeof(client_addr))) != 14) {
+                char debugbuf[100];
+                inet_ntop(AF_INET, &client_addr.sin_addr, debugbuf, 100);
                 fprintf(stderr, "Error sending back data. expected 14 bytes but got %d \n", n);
+                fprintf(stderr, "Debug info: port: %hd port(ntohs): %hd address: %d address inet_ntop: %s\n", client_addr.sin_port, ntohs(client_addr.sin_port), client_addr.sin_addr.s_addr, debugbuf);
                 return 1;
             }
         }
