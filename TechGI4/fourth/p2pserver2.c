@@ -218,8 +218,17 @@ int main(int argc, char *argv[])
         }
         else{
             packData(buffer, command, key, value, port, IP);
-
-            if((n=sendto(sockfd, (void *)buffer, 14, 0, (struct sockaddr*)&follow_addr, sizeof(follow_addr))) != 14) {
+	    int i=7;
+	    int dif=0;
+	    if(ownID >key){ dif = (int) pow(2,8);}
+	    int ii;
+	    for(ii=0;ii<8;ii++){
+	    	if(((int) ( ownID +(int) pow(2,ii)) %(int) pow(2,8))-dif >key){
+			i=ii-1;
+			break;
+		}	
+	    }
+            if((n=sendto(sockfd, (void *)buffer, 14, 0, (struct sockaddr*)&fingertable[i], sizeof(fingertable[i]))) != 14) {
                 fprintf(stderr, "Error sending data to next Peer. expected 14 bytes but got %d \n", n);
                 return 1;
             }
