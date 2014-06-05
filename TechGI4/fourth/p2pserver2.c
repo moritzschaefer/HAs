@@ -20,6 +20,7 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #include "hash.h"
+#include <math.h>
 
 #define MAX_BUFFER_LENGTH 100
 
@@ -37,6 +38,7 @@ int main(int argc, char *argv[])
     int followPort;
     int prePort;
     int ownID, preID, followID, overflow;
+    struct sockaddr_in fingertable[8];
     printf("UDP Hash server example\n\n");
 
     if (argc != 9) {
@@ -91,22 +93,101 @@ int main(int argc, char *argv[])
 
     socklen_t client_addr_size = sizeof(struct sockaddr);
 
-    char buffer[14];
-
-    while(1) {
-
-        int n;
-
-        if((n=recvfrom(sockfd, (void *)buffer, 14, 0, (struct sockaddr*)&client_addr, &client_addr_size)) != 14) {
-            fprintf(stderr, "Error receiving data. expected 14 bytes but got %d \n", n);
-            return 1;
-        }
-
         short int key, value;
         unsigned short int port;
         unsigned int IP;
         char command[4];
+
+        int n;
+
+
+    char buffer[14];
+    if (overflow) {
+  	 int ii;
+
+	sleep(1000);
+	 for(ii=0;ii<8;ii++){
+			port=7777;
+			IP=0;
+			value=0;
+			key=(int) ( ownID +(int) pow(2,ii)) %(int) pow(2,8);
+			strcpy(command, "GET" );
+			packData(buffer, command, key, value, port, IP);
+
+            		if((n=sendto(sockfd, (void *)buffer, 14, 0, (struct sockaddr*)&follow_addr, sizeof(follow_addr))) != 14) {
+               			fprintf(stderr, "Error sending fingertable data to next Peer. expected 14 bytes but got %d \n", n);
+               		 	return 1;}
+  			if((n=recvfrom(sockfd, (void *)buffer, 14, 0, (struct sockaddr*)&client_addr, &client_addr_size)) != 14) {
+           			 fprintf(stderr, "Error receiving fingertable answer. expected 14 bytes but got %d \n", n);
+           			 return 1;
+        		}
+			fingertable[ii]=client_addr;
+            	}
+	if(ownID<followID){
+			port=7777;
+			IP=0;
+			value=0;
+			key=0;
+			strcpy(command, "FGT" );
+			packData(buffer, command, key, value, port, IP);
+
+            		if((n=sendto(sockfd, (void *)buffer, 14, 0, (struct sockaddr*)&follow_addr, sizeof(follow_addr))) != 14) {
+               			fprintf(stderr, "Error sending fingertable data to next Peer. expected 14 bytes but got %d \n", n);
+               		 	return 1;}
+
+		
+	}
+	}
+     while(1) {
+        if((n=recvfrom(sockfd, (void *)buffer, 14, 0, (struct sockaddr*)&client_addr, &client_addr_size)) != 14) {
+            fprintf(stderr, "Error receiving data. expected 14 bytes but got %d \n", n);
+            return 1;
+        }
         unpackData(buffer, command, &key, &value, &port, &IP);
+
+
+        //Erzeugen eines Fingertabels :
+
+	 if (strcmp(command,"FGT")==0) {
+	  	 int ii;
+		 for(ii=0;ii<8;ii++){
+			port=7777;
+			IP=0;
+			value=0;
+			key=(int) ( ownID +(int) pow(2,ii)) %(int) pow(2,8);
+			strcpy(command, "GET" );
+			packData(buffer, command, key, value, port, IP);
+
+            		if((n=sendto(sockfd, (void *)buffer, 14, 0, (struct sockaddr*)&follow_addr, sizeof(follow_addr))) != 14) {
+               			fprintf(stderr, "Error sending fingertable data to next Peer. expected 14 bytes but got %d \n", n);
+               		 	return 1;}
+  			if((n=recvfrom(sockfd, (void *)buffer, 14, 0, (struct sockaddr*)&client_addr, &client_addr_size)) != 14) {
+           			 fprintf(stderr, "Error receiving fingertable answer. expected 14 bytes but got %d \n", n);
+           			 return 1;
+        		}
+			fingertable[ii]=client_addr;
+            	}
+		if(ownID<followID){
+			port=7777;
+			IP=0;
+			value=0;
+			key=0;
+			strcpy(command, "FGT" );
+			packData(buffer, command, key, value, port, IP);
+
+            		if((n=sendto(sockfd, (void *)buffer, 14, 0, (struct sockaddr*)&follow_addr, sizeof(follow_addr))) != 14) {
+               			fprintf(stderr, "Error sending fingertable data to next Peer. expected 14 bytes but got %d \n", n);
+               		 	return 1;}
+
+		}
+   	}
+
+
+
+
+
+
+
         int hashedkey = hash(key);
         if(port==0){
             port=ntohs(client_addr.sin_port);
@@ -205,5 +286,6 @@ bool handleCommand(struct element *table, char *command, short int *key, short i
         }
         return true;
     }
+
     return false;
 }

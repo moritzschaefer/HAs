@@ -1,0 +1,1 @@
+Mit ohne Fingertabel dauert der durchschnittliche Aufrauf einer anfrage im mittel 110000 ns.

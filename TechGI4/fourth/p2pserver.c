@@ -101,7 +101,7 @@ int main(int argc, char *argv[])
             fprintf(stderr, "Error receiving data. expected 14 bytes but got %d \n", n);
             return 1;
         }
-
+	//printf("Recieved some Data");
         short int key, value;
         unsigned short int port;
         unsigned int IP;
@@ -113,7 +113,7 @@ int main(int argc, char *argv[])
             IP= ntohl(client_addr.sin_addr.s_addr);
         }
 
-        if((overflow && (hashedkey<ownID || hashedkey>preID)) || (hashedkey<ownID && hashedkey>preID)){
+        if((overflow && (hashedkey<=ownID || hashedkey>preID)) || (hashedkey<=ownID && hashedkey>preID)){
             if(!handleCommand(table, command, &key, &value)) {
                 fprintf(stderr, "Unknown command from client. exiting: %s", command);
                 return 1;
