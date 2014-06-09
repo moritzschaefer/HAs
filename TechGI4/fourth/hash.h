@@ -13,7 +13,8 @@ struct element{
 
 short int hash(short int key) {
     // return the hash function
-    short int val = (((3+key)*5+100)/3)%TABLE_SIZE;
+    //short int val = (((3+key)*5+100)/3)%TABLE_SIZE;
+    short int val = (key) % TABLE_SIZE;
     if(val < 0)
         val *= -1;
     assert(val <= 255);

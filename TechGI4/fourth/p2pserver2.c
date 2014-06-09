@@ -39,6 +39,8 @@ int main(int argc, char *argv[])
     int prePort;
     int ownID, preID, followID, overflow;
     struct sockaddr_in fingertable[8];
+    int fingertableunfinished;
+    fingertableunfinished = 1;
     printf("UDP Hash server example\n\n");
 
     if (argc != 9) {
@@ -99,15 +101,17 @@ int main(int argc, char *argv[])
     char command[4];
 
     int n;
-
+    fingertable[0] = follow_addr;
 
     char buffer[14];
-    if (overflow) {
+    printf(" Overflow: %d  \n", overflow);
+    if(overflow == 1){
         int ii;
-
-        sleep(1000);
-        for(ii=0;ii<8;ii++){
-            port=7777;
+	printf("I Fall Asleep\n");
+	sleep(2);
+	printf("I Dont Sleep Anymore\n");
+        for(ii=1;ii<8;ii++){
+            port=0;
             IP=0;
             value=0;
             key=(int) ( ownID +(int) pow(2,ii)) %(int) pow(2,8);
@@ -121,10 +125,13 @@ int main(int argc, char *argv[])
                 fprintf(stderr, "Error receiving fingertable answer. expected 14 bytes but got %d \n", n);
                 return 1;
             }
+	    unpackData(buffer, command, &key, &value, &port, &IP);
             fingertable[ii]=client_addr;
+	    printf("Fingertable %i with key : %i and with port:  %u \n ", ii, key,  client_addr.sin_port);
         }
+	fingertableunfinished =0;	
         if(ownID<followID){
-            port=7777;
+            port=0;
             IP=0;
             value=0;
             key=0;
@@ -137,8 +144,14 @@ int main(int argc, char *argv[])
 
 
         }
+	else{
+	printf("FINGERTABLE DONE \n");}
+    }
+    else {
+    	printf("I Don't want to sleep\n");
     }
     while(1) {
+	//printf("I am: %i Stuck in an while-loop, and my fingertablestatus is : %i \n" , ownID, fingertableunfinished);
         if((n=recvfrom(sockfd, (void *)buffer, 14, 0, (struct sockaddr*)&client_addr, &client_addr_size)) != 14) {
             fprintf(stderr, "Error receiving data. expected 14 bytes but got %d \n", n);
             return 1;
@@ -150,8 +163,8 @@ int main(int argc, char *argv[])
 
         if (strcmp(command,"FGT")==0) {
             int ii;
-            for(ii=0;ii<8;ii++){
-                port=7777;
+            for(ii=1;ii<8;ii++){
+                port=0;
                 IP=0;
                 value=0;
                 key=(int) ( ownID +(int) pow(2,ii)) %(int) pow(2,8);
@@ -165,8 +178,12 @@ int main(int argc, char *argv[])
                     fprintf(stderr, "Error receiving fingertable answer. expected 14 bytes but got %d \n", n);
                     return 1;
                 }
-                fingertable[ii]=client_addr;
+                
+	    	unpackData(buffer, command, &key, &value, &port, &IP);
+            	fingertable[ii]=client_addr;
+	    	printf("Fingertable %i with key : %i and with port:  %u \n ", ii, key,  client_addr.sin_port);
             }
+	    fingertableunfinished = 0;
             if(ownID<followID){
                 port=7777;
                 IP=0;
@@ -180,9 +197,12 @@ int main(int argc, char *argv[])
                     return 1;}
 
             }
+	    else{
+	    	printf("FINGERTABLE DONE \n");}
+	    continue;	
         }
 
-
+	
 
 
 
@@ -202,10 +222,10 @@ int main(int argc, char *argv[])
             client_addr.sin_family = AF_INET;
             client_addr.sin_port = htons(port);
             client_addr.sin_addr.s_addr = htonl(IP);
-
+            //printf("Its My turn, i have the ID %d, the key was %d and the hashed key was %d \n", ownID, key, hashedkey);
             memset(client_addr.sin_zero, '\0', sizeof client_addr.sin_zero);
 
-
+	    
             packData(buffer, command, key, value, port, IP);
 
             if((n=sendto(sockfd, (void *)buffer, 14, 0, (struct sockaddr*)&client_addr, sizeof(client_addr))) != 14) {
@@ -220,16 +240,21 @@ int main(int argc, char *argv[])
             packData(buffer, command, key, value, port, IP);
 	    int i=7;
 	    int dif=0;
-	    if(ownID >key){ dif = (int) pow(2,8);}
+	    if(ownID >hashedkey){ dif = (int) pow(2,8);}
 	    int ii;
-	    for(ii=0;ii<8;ii++){
-	    	if(((int) ( ownID +(int) pow(2,ii)) %(int) pow(2,8))-dif >key){
+	    for(ii=1;ii<8;ii++){
+	    	if((int)(ownID +(int) pow(2,ii)) -dif >= hashedkey){
 			i=ii-1;
 			break;
 		}	
 	    }
+	    if(fingertableunfinished) i=0;
             if((n=sendto(sockfd, (void *)buffer, 14, 0, (struct sockaddr*)&fingertable[i], sizeof(fingertable[i]))) != 14) {
-                fprintf(stderr, "Error sending data to next Peer. expected 14 bytes but got %d \n", n);
+                fprintf(stderr, "Error sending data to next Peer expected 14 bytes but got %d \n",  n);
+		char debugbuf[100];
+                inet_ntop(AF_INET, &client_addr.sin_addr, debugbuf, 100);
+                fprintf(stderr, "Debug info: port: %hd port(ntohs): %hd address: %d address inet_ntop: %s\n", fingertable[i].sin_port, ntohs(fingertable[i].sin_port), fingertable[i].sin_addr.s_addr, debugbuf);
+		printf("Own id : %d, key: %d, hashedkey: %d Position in Fingertable : %d \n ", ownID, key, hashedkey, i);
                 return 1;
             }
 
