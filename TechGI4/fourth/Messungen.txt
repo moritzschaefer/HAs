@@ -1,0 +1,5 @@
+Ohne Fingertabel dauert der durchschnittliche Aufruf einer Anfrage im Mittel 110000 ns.
+Mit Fingertabel dauert der durschnittliche Aufruf einer Anfrage im Mittel 120000ns. 
+Dies liegt daran, dass unsere Fingertable bei 4 Knoten recht überflüssig ist, vorallem weil wir die 4 Knoten auf den Bereich gleichmäßig aufgeteilt haben. So wird auch mit der Formel nur maximal 1 Knoten übersprungen, es müssen jedoch mehr Abfragen gemacht werden, weswegen dies etwas länger dauert. Bei mehr Knoten wird sich die Zeit mit Fingertable aber nur log(n) erhöhen, hingegen ohne Fingertable dann linear. 
+
+

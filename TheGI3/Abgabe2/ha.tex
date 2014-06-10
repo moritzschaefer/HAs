@@ -1,0 +1,157 @@
+\documentclass[10pt,a4paper,german,landscape,fleqn]{article} \usepackage[utf8]{inputenc} % damit man im Text äöü verwenden kann
+
+\usepackage{amsmath} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{graphicx} \usepackage{paralist} \usepackage{etoolbox}
+\setlength{\mathindent}{0pt}
+
+\usepackage[ngerman]{babel}
+\usepackage{geometry}
+\geometry{verbose,a4paper,tmargin=25mm,bmargin=25mm,lmargin=15mm,rmargin=20mm}
+\usepackage[arrow, matrix, curve]{xy}
+
+\usepackage{mathtools}
+
+\usepackage{semantic}
+\usepackage{xifthen} \usepackage{ifthen} \usepackage{ifmtarg} %\usepackage{graphicx} %wenn man die diagrame lieber so einscannt
+
+\usepackage{paralist} % mehr möglichkeiten bei Aufzählungen
+
+\usepackage{tikz} % tiks bedeutet "tikz ist kein Zeichenprogramm" % wird für die grafiken benötigt
+
+\usepackage{tikz-cd} %Create commutative diagrams with TikZ (http://www.ctan.org/pkg/tikz-cd) \usetikzlibrary{matrix,arrows,decorations.pathmorphing} %kp, copy-pasted
+
+\RequirePackage{etoolbox}
+
+\RequirePackage{ifthen}
+
+\RequirePackage{xifthen}
+
+\RequirePackage{ifmtarg} %TODO: Wie kann ich die TheGi Macros einbinden?
+
+\usepackage{Macros} %TheGi Macros (http://stackoverflow.com/questions/5993965/include-sty-file-from-a-super-subdirectory-of-main-tex-file) %\usepackage{bussproofs}
+
+
+
+\begin{document}
+
+\title{TheGI III \\
+2. Abgabe\\
+Tutor:Nadine Rohde Raum: E-N 187 Uhrzeit: Mittwoch 12-14 Uhr \\ } % Declares the document's title.
+\author{Moritz Schäfer (350651), \\
+Marco Morik (348689), Max Gotthardt(350464)} % Declares the author's name.
+\date{June 9 2014} % Deleting this command produces today's date.
+
+\maketitle
+
+
+
+\newpage
+
+\section*{6. Blatt } % Produces section heading. Lower-level
+\subsection*{Aufgabe 1.a)}
+
+\begin{tikzpicture}
+  \node (max) at (0,2) {$(3,3)$};
+
+  \node (a) at (-1,1) {$(2,3)$};
+  \node (b) at (1,1) {$(3,2)$};
+
+  \node (c) at (-2,0) {$(1,3)$};
+  \node (d) at (0,0) {$(2,2)$};
+  \node (e) at (2,0) {$(3,1)$};
+
+  \node (f) at (-1,-1) {$(1,2)$};
+  \node (g) at (1,-1) {$(2,1)$};
+
+  \node (min) at (0,-2) {$(1,1)$};
+
+  \draw (min)  -- (g) -- (e) -- (b) -- (max)
+    (min)  -- (f) -- (c) -- (a) -- (max)
+    (g)  -- (d) -- (b)
+    (f)  -- (d) -- (a);
+  %\draw[preaction={draw=white, -,line width=6pt}] (a) -- (e) -- (c);
+\end{tikzpicture}
+
+
+\subsection*{Aufgabe 1.b)}
+
+$ supr2 : (\mathbb N^{+} \times \mathbb N^{+} ) \times (\mathbb N^{+} \times \mathbb N^{+} ) \rightarrow (\mathbb N^{+} \times \mathbb N^{+} )$ mit \\
+$ supr2((x_1,y_1),(x_2,y_2)) = (max(x_1, x_2), max(y_1, y_2)) $
+$ inf2 : (\mathbb N^{+} \times \mathbb N^{+} ) \times (\mathbb N^{+} \times \mathbb N^{+} ) \rightarrow (\mathbb N^{+} \times \mathbb N^{+} )$ mit \\
+$ inf2((x_1,y_1),(x_2,y_2)) = (min(x_1, x_2), min(y_1, y_2)) $
+
+\subsection*{Aufgabe 1.c)}
+
+$\sqcup X = (x_0, y_0).\forall x,y \in X. x_0 \ge x \wedge y_0 \ge y$ \\
+$\sqcap X = (x_0, y_0).\forall x,y \in X. x_0 \le x \wedge y_0 \le y$
+
+\subsection*{Aufgabe 1.d)}
+
+$\top$ ist nicht definiert für die Trägermenge da es kein Element in $(\mathbb N^{+} \times \mathbb N^{+} )$ gibt so dass unter der Relation $\le_2$ alle Elemente kleiner oder gleich sind (wegen der Unendlichkeit).\\
+$\bot$ ist definiert mit $\bot = (1,1)$
+\subsection*{Aufgabe 1.e)}
+Für einen vollständigen Verband müssen sowohl $\top$ als auch $\bot$ definiert sein. Das ist nicht der Fall, also ist es kein vollständiger Verband.
+\subsection*{Aufgabe 1.f)}
+Damit $f$ monoton ist muss (neben der Bedingung, dass $(D, \le_2)$ eine partielle Ordnung ist, was gilt) gelten: \\
+Für alle $X, Y \in (\mathbb N^{+} \times \mathbb N^{+} )$ wenn $X \le_2 Y$ dann gilt auch $f(X) \le_2 f(Y)$. \\
+Seien $X,Y$ mit $X \coloneqq (x_0, x_1)$ und $Y \coloneqq (y_0, y_1)$ beliebig aber fest.
+Dies ist eine Implikation also können wir $X \le_2 Y$ als Annahme nehmen und erhalten daraus: \\
+$ x0! \le y0! $(1) und $x_1^2+2 x_1 - 1 \le 2 y_1^2 + 2 y_1 -1$ \\
+Zu zeigen ist damit $f(X) \le_2 f(Y)$. Mit der Definition von $\le_2$ folgt daraus:
+$x_0! \le y_0 \wedge x_1^2 + 2x_1 -1 \le 2 y_1^2 + 2 y_1 -1$. Das gilt wenn beide Teile der Verundung wahr sind: \\
+$x_0! \le y_0$ gilt mit unserer ersten Annahme und unserer Definitionsmenge. \\
+$x_1^2 + 2x_1 -1 \le 2 y_1^2 + 2 y_1 -1$ gilt ebenfalls mit unserer zweiten Annahme und unserer Definitionsmenge. \\
+Damit ist die Implikation wahr und der Beweis vollständig und $f$ damit monoton.
+
+\subsection*{Aufgabe 2.)}
+
+\section*{7. Blatt } % Produces section heading. Lower-level
+
+\subsection*{Aufgabe 3.a)}
+Damit $(B,\le)$ eine partielle Ordnung ist muss für die Relation $\le$ gelten:\\
+Seien $f,g,h \in B$ \\
+\begin{enumerate}
+  \item $\le$ ist reflexiv: \\
+    \begin{align}
+      &\forall f \in B. f \le f\\
+      &{\stackrel{\text{def $\le$}}{\Rightarrow}} f^{-1}(\{1\}) \subseteq f^{-1}(\{1\})
+    \end{align}
+    Gilt, da eine Menge auch Teilmenge von sich selbst ist.
+  \item $\le$ ist antisymmetrisch: \\
+    Sei $A=\{0,1\}^n$.
+    \begin{align}
+      &f \le g \wedge g \le f \rightarrow f = g \\
+      &{\stackrel{\text{def $\le$}}{\Rightarrow}} f^{-1}(\{1\}) \subseteq g^{-1}(\{1\}) \wedge g^{-1}(\{1\}) \subseteq f^{-1}(\{1\}) \rightarrow f = g \\
+    \end{align}
+      Der vordere Teil der Implikation ist die Definition von Mengengleichheit. Wir haben also also als Annahme: $f^{-1}(\{1\}) = g^{-1}(\{1\})$ und müssen zeigen: $f=g$
+    \begin{align}
+      &f^{-1}(\{1\}) = g^{-1}(\{1\}) \\
+      &{\stackrel{\text{def $^{-1}$}}{\Rightarrow}} \{a \in A | f(a) \in \{1\}\} = \{a \in A | g(a) \in \{1\}\} \\
+      &\Rightarrow \{a \in A | f(a) = 1\} = \{a \in A | g(a) = 1\} \\
+    \end{align}
+    Da der Funktionswert 1 die gleiche Urbildmenge für beide Funktionen hat und die Funktion auf A vollständig definiert ist, sind die Funktionen gleich, was zu zeigen war. Also ist die Relation $\le$ antisymmetrisch.
+  \item $\le$ ist transitiv: \\
+    \begin{align}
+      &f \le g \wedge g \le h \rightarrow f \le h \\
+      &{\stackrel{\text{def $\le$}}{\Rightarrow}} f^{-1}(\{1\}) \subseteq g^{-1}(\{1\}) \wedge g^{-1}(\{1\}) \subseteq h^{-1}(\{1\}) \rightarrow f^{-1}(\{1\}) \subseteq h^{-1}(\{1\})\\
+      &{\stackrel{\text{def $^{-1}$}}{\Rightarrow}} \{a \in A | f(a) \in \{1\}\} \subseteq \{a \in A | g(a) \in \{1\}\} \wedge \{a \in A | g(a) \in \{1\}\} \subseteq \{a \in A | h(a) \in \{1\}\} \rightarrow \{a \in A | f(a) \in \{1\}\} \subseteq \{a \in A | h(a) \in \{1\}\}
+    \end{align}
+    Das ist gegeben durch die Transitivität von Teilmengen.
+\end{enumerate}
+Da die Relation $\le$ auf $B$ die drei Eigenschaften hat, ist $(B,\le)$ eine partielle Ordnung.
+\subsection*{Aufgabe 3.b)}
+Da gegeben ist, dass $(B,\le)$ ein Verband ist muss nur noch gezeigt werden, dass
+$B$ endlich ist, damit Lemma 4.4 gilt und wir einen vollständigen Verband haben. \\
+Für ein gegebenes n können wir nur eine endliche Anzahl an verschiedenen Funktionen definieren. Damit ist $B$ endlich. \\
+Wir können nur eine endliche Anzahl verschiedener Funktionen definieren, da die $n$ verschiedenen Variablen nur $2^n$ verschiedene Werte annehmen können. Damit existieren $2^{2^n}$ verschiede Funktionen(Da die Wertemenge nur 2 Werte enthält). Das ist eine begrenzte Anzahl an Funktionen.
+\newpage
+
+\subsection*{Aufgabe 5.)}
+\begin{align}
+&\MC{F}^1(\Proc \times \Proc) = s(r(\{(P_1,P_5),(P_1,_P4),(P_1,P_4),(P_2,P_6\})) \\
+&\MC{F}^2(\Proc \times \Proc) = s(r(\{(P_1,P_5)\})) \\
+&\MC{F}^3(\Proc \times \Proc) = \MC{F}^2 \\
+\end{align}
+Daher erhalten wir $P_1$ und $P_2$ als einzige nicht triviale größte Bisimulation.
+
+Es gilt daher $P_1 \bisim P_5$
+\end{document}
