@@ -7,6 +7,7 @@
 \geometry{verbose,a4paper,tmargin=25mm,bmargin=25mm,lmargin=15mm,rmargin=20mm}
 \usepackage[arrow, matrix, curve]{xy}
 
+\usepackage{mathtools}
 
 \usepackage{semantic}
 \usepackage{xifthen} \usepackage{ifthen} \usepackage{ifmtarg} %\usepackage{graphicx} %wenn man die diagrame lieber so einscannt
@@ -32,11 +33,11 @@
 \begin{document}
 
 \title{TheGI III \\
-1. Abgabe\\
+2. Abgabe\\
 Tutor:Nadine Rohde Raum: E-N 187 Uhrzeit: Mittwoch 12-14 Uhr \\ } % Declares the document's title.
 \author{Moritz Schäfer (350651), \\
 Marco Morik (348689), Max Gotthardt(350464)} % Declares the author's name.
-\date{May 13 2014} % Deleting this command produces today's date.
+\date{June 9 2014} % Deleting this command produces today's date.
 
 \maketitle
 
@@ -44,53 +45,65 @@ Marco Morik (348689), Max Gotthardt(350464)} % Declares the author's name.
 
 \newpage
 
-\section*{1. Blatt (Hausaufgabe 2)} % Produces section heading. Lower-level
+\section*{6. Blatt } % Produces section heading. Lower-level
 \subsection*{Aufgabe 1.a)}
 
-% aufzaehlung enumerate item
-\begin{itemize}
-  \item $ Studentengruppe \CCSDef \In{betreten}{}.\In{aktiv}{}.\Out{erstellen}{}.\In{verlassen}{}.Studentengruppe $
-  \item
-    $ HAGruppe \CCSDef \In{betreten}{}.\In{reden}{}.\Out{schlechteHas}{}.\In{verlassen}{}.HAGruppe $ \\
-    $ TutGruppe \CCSDef \In{betreten}{}.\In{zuhoeren}{}.\Out{guteHAs}{}.\In{verlassen}{}.TutGruppe $
+\begin{tikzpicture}
+  \node (max) at (0,2) {$(3,3)$};
 
-  \item
-$ Tutor \CCSDef \In{betreten}{}.\In{verlassen}{}.Tutor $
-\item
-  $ Raum \CCSDef TutorienRaum + HARaum \\
-TutorienRaum \CCSDef \Out{tutorBetreten}{}.\Out{tutGruppeBetreten}{}.\Out{zuhoeren}{}.\Out{tutGruppeVerlassen}{}.\Out{tutorVerlassen}{}.Raum \\
-HARaum \CCSDef \Out{haGruppeBetreten}{}.\Out{reden}{}.\Out{haGruppeVerlassen}{}.Raum $
-\item
+  \node (a) at (-1,1) {$(2,3)$};
+  \node (b) at (1,1) {$(3,2)$};
 
-  $ Uni \CCSDef  \Res {(((Raum | \Relabel {Tutor}{tutorBetreten/betreten,tutorVerlassen/verlassen}) | \\ \Relabel {TutGruppe}{tutGruppeBetreten/betreten,tutGruppeVerlassen/verlassen,erstellen/guteHAs} )| \\ \Relabel {HAGruppe}{haGruppeBetreten/betreten,haGruppeVerlassen/verlassen,erstellen/schlechteHAs})\\}{tutGruppeBetreten,tutGruppeVerlasse,haGruppeBetreten,haGruppeVerlassen,reden,zuhoeren,tutorBetreten,tutorVerlassen}  $
-\end{itemize}
+  \node (c) at (-2,0) {$(1,3)$};
+  \node (d) at (0,0) {$(2,2)$};
+  \node (e) at (2,0) {$(3,1)$};
+
+  \node (f) at (-1,-1) {$(1,2)$};
+  \node (g) at (1,-1) {$(2,1)$};
+
+  \node (min) at (0,-2) {$(1,1)$};
+
+  \draw (min)  -- (g) -- (e) -- (b) -- (max)
+    (min)  -- (f) -- (c) -- (a) -- (max)
+    (g)  -- (d) -- (b)
+    (f)  -- (d) -- (a);
+  %\draw[preaction={draw=white, -,line width=6pt}] (a) -- (e) -- (c);
+\end{tikzpicture}
+
 
 \subsection*{Aufgabe 1.b)}
 
-	Zum Kurzfassen:\\
-	$A := \{tutGruppeBetreten,tutGruppeVerlasse,haGruppeBetreten,haGruppeVerlassen,reden,zuhoeren,tutorBetreten,tutorVerlassen\}$\\ \\
-	$HAGruppe \CCSDef \Relabel {\In{betreten}{}.\In{reden}{}.\Out{schlechteHas}{}.\In{verlassen}{}.HAGruppe}{haGruppeBetreten/betreten,haGruppeVerlassen/verlassen,erstellen/schlechteHAs} $ \\
-	$HAGruppe' \CCSDef \Relabel {\In{reden}{}.\Out{schlechteHas}{}.\In{verlassen}{}.HAGruppe}{haGruppeBetreten/betreten,haGruppeVerlassen/verlassen,erstellen/schlechteHAs} $ \\
-	$HAGruppe'' \CCSDef \Relabel {\Out{schlechteHas}{}.\In{verlassen}{}.HAGruppe}{haGruppeBetreten/betreten,haGruppeVerlassen/verlassen,erstellen/schlechteHAs} $ \\
-	$HAGruppe''' \CCSDef \Relabel {\In{verlassen}{}.HAGruppe}{haGruppeBetreten/betreten,haGruppeVerlassen/verlassen,erstellen/schlechteHAs} $ \\ \\
-	$TutGruppe \CCSDef \Relabel {\In{betreten}{}.\In{zuhoeren}{}.\Out{guteHAs}{}.\In{verlassen}{}.TutGruppe}{tutGruppeBetreten/betreten,tutGruppeVerlassen/verlassen,erstellen/guteHAs}$\\
-	$TutGruppe' \CCSDef \Relabel {\In{zuhoeren}{}.\Out{guteHAs}{}.\In{verlassen}{}.TutGruppe}{tutGruppeBetreten/betreten,tutGruppeVerlassen/verlassen,erstellen/guteHAs}$\\
-	$TutGruppe'' \CCSDef \Relabel {\Out{guteHAs}{}.\In{verlassen}{}.TutGruppe}{tutGruppeBetreten/betreten,tutGruppeVerlassen/verlassen,erstellen/guteHAs}$\\
-	$TutGruppe''' \CCSDef \Relabel {\In{verlassen}{}.TutGruppe}{tutGruppeBetreten/betreten,tutGruppeVerlassen/verlassen,erstellen/guteHAs}$ \\ \\
-	$Tutor \CCSDef 	 \Relabel {\In{betreten}{}.\In{verlassen}{}.Tutor }{tutorBetreten/betreten,tutorVerlassen/verlassen}$ \\
-	$Tutor' \CCSDef 	 \Relabel {\In{verlassen}{}.Tutor }{tutorBetreten/betreten,tutorVerlassen/verlassen}$ \\ \\
-$
-TutorienRaum \CCSDef \Out{tutorBetreten}{}.\Out{tutGruppeBetreten}{}.\Out{zuhoeren}{}.\Out{tutGruppeVerlassen}{}.\Out{tutorVerlassen}{}.Raum \\	
-TutorienRaum' \CCSDef \Out{tutGruppeBetreten}{}.\Out{zuhoeren}{}.\Out{tutGruppeVerlassen}{}.\Out{tutorVerlassen}{}.Raum \\	
-TutorienRaum'' \CCSDef \Out{zuhoeren}{}.\Out{tutGruppeVerlassen}{}.\Out{tutorVerlassen}{}.Raum \\	
-TutorienRaum''' \CCSDef \Out{tutGruppeVerlassen}{}.\Out{tutorVerlassen}{}.Raum \\	
-TutorienRaum'''' \CCSDef \Out{tutorVerlassen}{}.Raum \\ \\	
-$	
-$
-HARaum \CCSDef \Out{haGruppeBetreten}{}.\Out{reden}{}.\Out{haGruppeVerlassen}{}.Raum \\
-HARaum' \CCSDef \Out{reden}{}.\Out{haGruppeVerlassen}{}.Raum \\
-HARaum'' \CCSDef \Out{haGruppeVerlassen}{}.Raum \\
-$
+$ supr2 : (\mathbb N^{+} \times \mathbb N^{+} ) \times (\mathbb N^{+} \times \mathbb N^{+} ) \rightarrow (\mathbb N^{+} \times \mathbb N^{+} )$ mit \\
+$ supr2((x_1,y_1),(x_2,y_2)) = (max(x_1, x_2), max(y_1, y_2)) $
+$ inf2 : (\mathbb N^{+} \times \mathbb N^{+} ) \times (\mathbb N^{+} \times \mathbb N^{+} ) \rightarrow (\mathbb N^{+} \times \mathbb N^{+} )$ mit \\
+$ inf2((x_1,y_1),(x_2,y_2)) = (min(x_1, x_2), min(y_1, y_2)) $
+
+\subsection*{Aufgabe 1.c)}
+
+$\sqcup X = (x_0, y_0).\forall x,y \in X. x_0 \ge x \wedge y_0 \ge y$ \\
+$\sqcap X = (x_0, y_0).\forall x,y \in X. x_0 \le x \wedge y_0 \le y$
+
+\subsection*{Aufgabe 1.d)}
+
+$\top$ ist nicht definiert für die Trägermenge da es kein Element in $(\mathbb N^{+} \times \mathbb N^{+} )$ gibt so dass unter der Relation $\le_2$ alle Elemente kleiner oder gleich sind (wegen der Unendlichkeit).\\
+$\bot$ ist definiert mit $\bot = (1,1)$
+\subsection*{Aufgabe 1.e)}
+Für einen vollständigen Verband müssen sowohl $\top$ als auch $\bot$ definiert sein. Das ist nicht der Fall, also ist es kein vollständiger Verband.
+\subsection*{Aufgabe 1.f)}
+Damit $f$ monoton ist muss (neben der Bedingung, dass $(D, \le_2)$ eine partielle Ordnung ist, was gilt) gelten: \\
+Für alle $X, Y \in (\mathbb N^{+} \times \mathbb N^{+} )$ wenn $X \le_2 Y$ dann gilt auch $f(X) \le_2 f(Y)$. \\
+Seien $X,Y$ mit $X \coloneqq (x_0, x_1)$ und $Y \coloneqq (y_0, y_1)$ beliebig aber fest.
+Dies ist eine Implikation also können wir $X \le_2 Y$ als Annahme nehmen und erhalten daraus: \\
+$ x0! \le y0! $(1) und $x_1^2+2 x_1 - 1 \le 2 y_1^2 + 2 y_1 -1$ \\
+Zu zeigen ist damit $f(X) \le_2 f(Y)$. Mit der Definition von $\le_2$ folgt daraus:
+$x_0! \le y_0 \wedge x_1^2 + 2x_1 -1 \le 2 y_1^2 + 2 y_1 -1$. Das gilt wenn beide Teile der Verundung wahr sind: \\
+$x_0! \le y_0$ gilt mit unserer ersten Annahme und unserer Definitionsmenge. \\
+$x_1^2 + 2x_1 -1 \le 2 y_1^2 + 2 y_1 -1$ gilt ebenfalls mit unserer zweiten Annahme und unserer Definitionsmenge. \\
+Damit ist die Implikation wahr und der Beweis vollständig und $f$ damit monoton.
+
+\subsection*{Aufgabe 2.)}
+
+\newpage
 
   \begin{minipage}{0.4\linewidth-7.112pt}
    \makebox[\linewidth]{
@@ -214,8 +227,8 @@ Gilt.\\
 Sei $ \MC {B}=\{ (P|Q,Q|P)\} \cup Id_{Proc} $\\
 Wir zeigen, dass \MC {B} eine starke Bisimulation ist.
 \begin{itemize}
-\item Betrachte $Id_{Proc} \subseteq \MC {B}$: 
-\subitem - $Id_{Proc}$ ist per Definition eine Bisimulation 
+\item Betrachte $Id_{Proc} \subseteq \MC {B}$:
+\subitem - $Id_{Proc}$ ist per Definition eine Bisimulation
 \item Betrachte $ (P|Q ,Q|P) \in \MC{B}$
 \subitem - Transitionen von P$|$Q: \\
 1. Fall COM1
@@ -227,7 +240,7 @@ Wir zeigen, dass \MC {B} eine starke Bisimulation ist.
   }{P | Q  \CCSTrans {\alpha} P' | Q }
 \end{displaymath}
 \\
-Wähle 
+Wähle
 \begin{displaymath}
   \inference[COM2]
   {
@@ -270,7 +283,7 @@ Relation : \MC {Q}=${(q1,p3),(q2,p4),(q3,p5),(q4,p1),(q7,p2),(q6,p11),(q5,p10),(
 p3 und q1 simulieren sich gegenseitig stark. (Siehe Teil a) und Teil b)) \\
 Die Relation ist schon gegeben mit \MC {P} und \MC {Q}
 \subsubsection*{d)}
-p3 und q1 sind stark bisimilar, mit \MC {B}=\MC {P}$\cup$\MC {Q}. 
+p3 und q1 sind stark bisimilar, mit \MC {B}=\MC {P}$\cup$\MC {Q}.
 \subsubsection*{e)}
 q12 und p6 sind ebenfalls stark bisimilar.\\
 Gegeben sei \MC {B}=$\{(p6,q12),(p7,q13),(p9,q11),(p8,q10),(p9,q9),(p8,q8)\}$\\
@@ -326,7 +339,7 @@ Für $q2 \CCSTrans {b} q4$ wähle $p3 \CCSTrans {b} p5$ und (q4,p5) $\in$ \MC {Q
 \subitem Transition von q3:\\
 Für $q3 \CCSTrans {a} q1$ wähle $p4 \CCSTrans {a} p1$ und (q1,p1) $\in$ \MC {Q}
 \item Betrachte (q4,p5)$\in$ \MC {Q}
-\subitem Beides Blätter, habe keine Transitionen. 
+\subitem Beides Blätter, habe keine Transitionen.
 \end{itemize}
 \MC {Q} ist die Relation die q1 mit p1 stark simuliert.
 \subsubsection*{b)}
@@ -350,7 +363,7 @@ Für $p3 \CCSTrans {b} p5$ wähle $q2 \CCSTrans {c} q4$ und (p5,q4) $\in$ \MC {P
 \item Betrachte (p5,q3)$\in$ \MC {P}
 \subitem p5 ist ein Blatt und hat keine weiteren Relationen.
 
-\item Betrachte (p4,q3)$\in$ \MC {P} 
+\item Betrachte (p4,q3)$\in$ \MC {P}
 \subitem Transition von p4:\\
 Für $p4 \CCSTrans {a} p1$ wähle $q3 \CCSTrans {a} q1$ und (p1,q1) $\in$ \MC {P}
 
@@ -370,8 +383,8 @@ p1 und q1 sind nicht stark bisimilar:
  Mit dem Übergang $\CCSTrans {a}$ gelangt man in (p2,q2) $\in$ \MC {B}\\
  Mit dem Übergang $\CCSTrans {c}$ gelangt man von dort aus nach (p5,q3) $\in$ \MC {B}\\
  Von q3 gibt es den Übergang $q3 \CCSTrans {a} q1$, jedoch existiert kein Übergang $\CCSTrans {a}$ von p5, daher kann es die Simulation \MC {B} nicht geben.
- 
- 
+
+
 \newpage
 \section*{Blatt 3: Hausaufgabe 4}
 \subsection*{Aufgabe 7}
@@ -413,7 +426,7 @@ Diese sind jedoch nicht Bisimilar. Daher kann es keine Bisimulation  $\MC {B}$ g
     \end{xy}
    }
   \end{minipage}
-  
+
 \subsubsection*{b)}
 Proc = $\{C_i| i \in [1,5] \}$\\
 $\MC {A} = \{a,b\}$\\
