@@ -103,9 +103,6 @@ $x_1^2 + 2x_1 -1 \le 2 y_1^2 + 2 y_1 -1$ gilt ebenfalls mit unserer zweiten Anna
 Damit ist die Implikation wahr und der Beweis vollständig und $f$ damit monoton.
 
 \subsection*{Aufgabe 2.)}
-<<<<<<< HEAD
-
-=======
 Zu Zeigen: (X,R) ist ein Verband $ \land $ X ist endlich $\implies$  (X,R) ist ein vollständiger Verband \\
 Ein Verband ist vollständig wenn:  $\forall A \subseteq X.$ existiert $\sqcap$A und $\sqcup$A. \\ \\
 Induktionsbeweis über die Größe von A$\subseteq$X:\\
@@ -125,7 +122,6 @@ Das Infimum verhält sich analog. \\
 Es existiert also $\sqcap$A und $\sqcup$A für jede Teilmenge von X, folglich ist (X,R) ein vollständiger Verband
 
 \newpage
->>>>>>> 9bb9dc91dfbb18f3a6726832cbaa3fa89a091428
 \section*{7. Blatt } % Produces section heading. Lower-level
 
 \subsection*{Aufgabe 3.a)}
@@ -167,7 +163,6 @@ Für ein gegebenes n können wir nur eine endliche Anzahl an verschiedenen Funkt
 Wir können nur eine endliche Anzahl verschiedener Funktionen definieren, da die $n$ verschiedenen Variablen nur $2^n$ verschiedene Werte annehmen können. Damit existieren $2^{2^n}$ verschiede Funktionen(Da die Wertemenge nur 2 Werte enthält). Das ist eine begrenzte Anzahl an Funktionen.
 \newpage
 
-<<<<<<< HEAD
 \subsection*{Aufgabe 5.)}
 \begin{align}
 &\MC{F}^1(\Proc \times \Proc) = s(r(\{(P_1,P_5),(P_1,_P4),(P_1,P_4),(P_2,P_6\})) \\
@@ -177,7 +172,6 @@ Wir können nur eine endliche Anzahl verschiedener Funktionen definieren, da die
 Daher erhalten wir $P_1$ und $P_2$ als einzige nicht triviale größte Bisimulation.
 
 Es gilt daher $P_1 \bisim P_5$
-=======
 
 \subsection*{Aufgabe 4}
 Wir beschreiben im Folgenden D als Menge aller Fixpunkte.
@@ -191,3 +185,26 @@ $D=\{ \{0\},\{1\},\{0,1\}\}$\\
 $D=\{Nordpol\} \cup \{$Alle Punkte auf dem Ring um die Erde, bei dem 1 Km südlich der Umfang genau 1 Km beträgt $\} $\\
 >>>>>>> 9bb9dc91dfbb18f3a6726832cbaa3fa89a091428
 \end{document}
+
+\subsection*{Aufgabe 6.a)}
+Sei $X=\{x \in D | f(x) \le x \}$ und sei $z_{min} =def  \sqcap X$
+Um zu beweisen, dass $z_{min}$ wirklich der kleinste Fixpunkt der Funktion f ist, zeigen wir:
+\begin{enumerate}
+  \item $\sqcap X \in D$: \\
+    Trivial
+  \item Der kleinste Fixpunkt ist in X enthalten: \\
+    Das folgt aus der Definition für $X$ insbesondere durch die Reflexivität von $\le$. Da dadurch alle Fixpunkte in $X$ enthalten sind, ist auch der kleinste drin.
+  \item $z_{min}$ ist wirklich ein Fixpunkt: \\
+    Wenn $z_{min}$ nicht Fixpunkt wäre, dann müsste entweder gelten: $f(z_{min}) \neq z_{min} \wedge f(z_{min}) \le z_{min} $.
+    Da $f(z_{min}))$ in $D$ liegt ist $f(f(z_{min}))$ definiert und kleiner als $f(z_{min})$ wegen der Monotonie. Dieses ist aber nicht in der Menge enthalten, was aber nicht sein kann wegen der Definition von X. Hier ist ein Widerspruch.\\
+    Oder es muss gelten $f(z_{min}) \neq z_{min} \wedge z_{min} \le f(z_{min}) $. Das geht auch nicht wegen der Monotonie. also gilt tatsächlich $z_{min} = f(z_{min})$ und $z_{min}$ ist ein Fixpunkt.
+  \item $z_{min}$ ist wirklich kleinster Fixpunkt: \\
+    Die Menge enhält alle Fixpunkte. Das Infimum ist kleiner als alle.
+
+\end{enumerate}
+
+
+
+\newpage
+
+
