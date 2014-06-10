@@ -161,6 +161,26 @@ Da gegeben ist, dass $(B,\le)$ ein Verband ist muss nur noch gezeigt werden, das
 $B$ endlich ist, damit Lemma 4.4 gilt und wir einen vollständigen Verband haben. \\
 Für ein gegebenes n können wir nur eine endliche Anzahl an verschiedenen Funktionen definieren. Damit ist $B$ endlich. \\
 Wir können nur eine endliche Anzahl verschiedener Funktionen definieren, da die $n$ verschiedenen Variablen nur $2^n$ verschiedene Werte annehmen können. Damit existieren $2^{2^n}$ verschiede Funktionen(Da die Wertemenge nur 2 Werte enthält). Das ist eine begrenzte Anzahl an Funktionen.
+
+\subsection*{Aufgabe 6.a)}
+Sei $X=\{x \in D | f(x) \le x \}$ und sei $z_{min} =def  \sqcap X$
+Um zu beweisen, dass $z_{min}$ wirklich der kleinste Fixpunkt der Funktion f ist, zeigen wir:
+\begin{enumerate}
+  \item $\sqcap X \in D$: \\
+    Trivial
+  \item Der kleinste Fixpunkt ist in X enthalten: \\
+    Das folgt aus der Definition für $X$ insbesondere durch die Reflexivität von $\le$. Da dadurch alle Fixpunkte in $X$ enthalten sind, ist auch der kleinste drin.
+  \item $z_{min}$ ist wirklich ein Fixpunkt: \\
+    Wenn $z_{min}$ nicht Fixpunkt wäre, dann müsste entweder gelten: $f(z_{min}) \neq z_{min} \wedge f(z_{min}) \le z_{min} $.
+    Da $f(z_{min}))$ in $D$ liegt ist $f(f(z_{min}))$ definiert und kleiner als $f(z_{min})$ wegen der Monotonie. Dieses ist aber nicht in der Menge enthalten, was aber nicht sein kann wegen der Definition von X. Hier ist ein Widerspruch.\\
+    Oder es muss gelten $f(z_{min}) \neq z_{min} \wedge z_{min} \le f(z_{min}) $. Das geht auch nicht wegen der Monotonie. also gilt tatsächlich $z_{min} = f(z_{min})$ und $z_{min}$ ist ein Fixpunkt.
+  \item $z_{min}$ ist wirklich kleinster Fixpunkt: \\
+    Die Menge enhält alle Fixpunkte. Das Infimum ist kleiner als alle.
+
+\end{enumerate}
+
+
+
 \newpage
 
 
