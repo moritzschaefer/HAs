@@ -1,6 +1,6 @@
 /*
 ############################################################################
-# 
+# CLIENT.C 
 opyright TU-Berlin, 2011-2014 #
 # Die Weitergabe, Veröffentlichung etc. auch in Teilen ist nicht gestattet #
 # #
@@ -27,19 +27,15 @@ int main(int argc, char *argv[])
     struct hostent *he;
     int numbytes;
     int serverPort;
-    int a = 0;
-    int b = 0;
+	char[] command; //keine ahnung ob das so richtig ist!
 
-    printf("TCP client example\n\n");
-
-    if (argc != 5) {
-        fprintf(stderr,"Usage: tcpClient serverName serverPort int1 int2\n");
+    if (argc != 3) {
+        fprintf(stderr,"Usage: tcpClient serverName serverPort\n");
         exit(1);
     }
-
+	
+	//set server port
     serverPort = atoi(argv[2]);
-    a = atoi(argv[3]);
-    b = atoi(argv[4]);
 
     //Resolv hostname to IP Address
     if ((he=gethostbyname(argv[1])) == NULL) { // get the host info
@@ -47,10 +43,7 @@ int main(int argc, char *argv[])
         exit(1);
     }
 
-struct timespec start, end;
-    clock_gettime(CLOCK_REALTIME, &start);
-
-    /* ******************************************************************
+/* ******************************************************************
 TO BE DONE: Create socket
 ******************************************************************* */
 
@@ -66,41 +59,47 @@ TO BE DONE: Create socket
     their_addr.sin_addr = *((struct in_addr *)he->h_addr);
     memset(their_addr.sin_zero, '\0', sizeof their_addr.sin_zero);
 
+	
+	//ersten Zeitstempel nehmen
+	struct timespec t1,t2,t3,t4;
+    clock_gettime(CLOCK_REALTIME, &t1);
 
-    /* ******************************************************************
+/* ******************************************************************
 TO BE DONE: Packing
 ******************************************************************* */
 
     //connect(sockfd, &their_addr, sizeof(their_addr));
 
-    unsigned char buffer[4];
+    unsigned char buffer[20];
 
     // why was buffer *buffer before
-    packData(buffer, a, b);
+    packData(buffer,"REQ");
 
-    /* ******************************************************************
+/* ******************************************************************
 TO BE DONE: Send data
 ******************************************************************* */
 
-    printf("Sending values: %d, %d\n", a, b);
+    printf("Sending request to server...");
 
     socklen_t their_size;
     int n;
-    if((n = sendto(sockfd, buffer, sizeof(buffer), 0, (const struct sockaddr *) &their_addr, sizeof(their_addr))) != 4) {
-        fprintf(stderr, "Error sending data. expected 4, was %d \n", n);
+    if((n = sendto(sockfd, buffer, sizeof(buffer), 0, (const struct sockaddr *) &their_addr, sizeof(their_addr))) != 20) {
+        fprintf(stderr, "Error sending data. expected 20 Byte, was %d \n", n);
     }
-
-clock_gettime(CLOCK_REALTIME, &end);
-    long time = (end.tv_sec-start.tv_sec)*1000000000 + end.tv_nsec - start.tv_nsec;
-    printf("Send time was: %ld nanoseconds\n", time);
 
     if(recvfrom(sockfd, buffer, 2, 0, (const struct sockaddr *) &their_addr, &their_size) != 2) {
         fprintf(stderr, "Error receiving data.\n");
     }
+	clock_gettime(CLOCK_REALTIME, &t4);
     unpackData(buffer, &a);
-    printf("Received result: %d", a);
+	
+	//Calc the results
+	int offsetInSec = 0.5*((t4.tv_spec-t1.tv_spec)+(t3.tv_spec-2t.v_spec));
+	int delayInSec   = (t4.tv_spec-t1.tv_spec)-(t3.tv_spec-t2.tv_spec);	
+	
+    printf("Received result: %d", delayInSec);
 
-    /* ******************************************************************
+/* ******************************************************************
 TO BE DONE: Close socket
 ******************************************************************* */
     if( close(sockfd) == -1 ) {
@@ -111,18 +110,21 @@ TO BE DONE: Close socket
     return 0;
 }
 
-int packData(unsigned char *buffer, unsigned int a, unsigned int b) {
-    /* ******************************************************************
+// writes 4 bytes command, the rest null
+void packData(unsigned char *buffer, char *command) {
+/* ******************************************************************
 TO BE DONE: pack data
 ******************************************************************* */
-    buffer[0] = (unsigned char)((a >> 8)&255);
-    buffer[1] = (unsigned char)(a&255);
-    buffer[2] = (unsigned char)((b >> 8)&255);
-    buffer[3] = (unsigned char)(b&255);
+	memcpy(buffer, command, 4);
 }
-int unpackData(unsigned char *buffer, unsigned int *a) {
-    /* ******************************************************************
-TO BE DONE: pack data
+
+
+int unpackData(unsigned char *buffer, *command) {
+/* ******************************************************************
+TO BE DONE: unpack data
 ******************************************************************* */
-    *a = (buffer[0]<<8) | buffer[1];
+	void unpackData(unsigned char *buffer, char *command, short int *t2, short int *t3) {
+	memcpy(command, buffer, 4);
+    *t2 = *((timespec *)(buffer+4));
+    *t3 = *((timespec *)(buffer+12));
 }

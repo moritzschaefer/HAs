@@ -1,3 +1,6 @@
+/*
+############################################################################
+# SERVER.C
 opyright TU-Berlin, 2011-2014 #
 # Die Weitergabe, Veröffentlichung etc. auch in Teilen ist nicht gestattet #
 # #
@@ -16,9 +19,8 @@ opyright TU-Berlin, 2011-2014 #
 #include <netdb.h>
 
 #define MAX_BUFFER_LENGTH 100
-
-void unpackData(unsigned char *buffer, unsigned int *a, unsigned int *b);
-int gcd ( int a, int b );
+void unpackData(unsigned char *buffer, char *command, int *t2tv_sec, int *t2tv_nsec, int *t3tv_sec, int *t3tv_nsec)
+void packData(unsigned char *buffer, timespec *t2, timespec *t3);
 int main(int argc, char *argv[])
 {
     int response_result = 1;
@@ -27,17 +29,16 @@ int main(int argc, char *argv[])
     struct hostent *he;
     int udpPort;
 
-    printf("UDP server example\n\n");
+    printf("Der Zeitserver fährt hoch\n\n");
 
     if (argc != 2) {
         fprintf(stderr,"Usage: tcpServer udpPort\n");
         exit(1);
     }
+	//Port setzen
+    udpPort = atoi(argv[1]); //atoi holt aus einem String eine Zahl
 
-    udpPort = atoi(argv[1]);
-
-    // first udp
-
+	//set a udp Server
     sockfd = socket(AF_INET, SOCK_DGRAM, IPPROTO_IP);
     if(sockfd == -1) {
         fprintf(stderr, "Error creating socket\n");
@@ -61,29 +62,31 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    socklen_t client_addr_size;;
+    socklen_t client_addr_size;
 
-    char buffer[4];
+    char buffer[20];
 
+	//Zweiter Zeitstempel
+    clock_gettime(CLOCK_REALTIME, &t2);
+	
     int n;
-    if((n=recvfrom(sockfd, buffer, sizeof(buffer), 0, (struct sockaddr*)&client_addr, &client_addr_size)) != 4) {
-        fprintf(stderr, "Error receiving data. expected 4 bytes but got %d \n", n);
+    if((n=recvfrom(sockfd, buffer, sizeof(buffer), 0, (struct sockaddr*)&client_addr, &client_addr_size)) != 20) {
+        fprintf(stderr, "Error receiving data. expected 20 bytes but got %d \n", n);
         return 1;
     }
-
-    // why was buffer *buffer before
-    unsigned int a,b;
-    unpackData(buffer, &a, &b);
-    int result = gcd(a,b);
+	printf("Request arrived");
+	
+	//Dritter Zeitstempel
+	clock_gettime(CLOCK_REALTIME, &t3);
     //don't print but send
     if(response_result) {
-        packData(buffer, result);
+        packData(buffer, char *command, int *t2.tv_sec, int *t2.tv_nsec, int *t3.tv_sec, int *t3.tv_nsec);
         if((n=sendto(sockfd, buffer, 2, 0, (struct sockaddr*)&client_addr, client_addr_size)) != 2) {
             fprintf(stderr, "Error sending back data. expected 2 bytes but got %d \n", n);
             return 1;
         }
     } else {
-        printf("received: %d, %d; GGT: %d\n", a, b, result);
+        printf("Result sended");
     }
 
     if( close(sockfd) == -1 ) {
@@ -93,26 +96,24 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-int packData(unsigned char *buffer, unsigned int a) {
-    /* ******************************************************************
+
+/* ******************************************************************
+TO BE DONE: unpack data
+******************************************************************* */
+void unpackData(unsigned char *buffer, char *command){
+	memcpy(command, buffer, 4);
+} 
+
+// writes 4 bytes command, the rest null
+void packData(unsigned char *buffer, char *command, int *t2, int *t3) {
+/* ******************************************************************
 TO BE DONE: pack data
 ******************************************************************* */
-    buffer[0] = (unsigned char)((a >> 8)&255);
-    buffer[1] = (unsigned char)(a&255);
+	memcpy(buffer, command, 4);
+	*((short *)(buffer+4)) 	= t2->tv_sec;//es ist immerhin ein Zeiger, deswegen ->?!
+	*((short *)(buffer+8))	= t2->tv_nsec;
+	*((short *)(buffer+12)) = t3->tv_sec;
+	*((short *)(buffer+16)) = t3->tv_nsec;
 }
 
-void unpackData(unsigned char *buffer, unsigned int *a, unsigned int *b) {
-    /* ******************************************************************
-TO BE DONE: pack data
-******************************************************************* */
-    *a = (buffer[0]<<8) | buffer[1];
-    *b = (buffer[2]<<8) | buffer[3];
-}
-
-int gcd ( int a, int b ) {
-    int c;
-    while ( a != 0 ) {
-        c = a; a = b%a; b = c;
-    }
-    return b;
-}
+	
