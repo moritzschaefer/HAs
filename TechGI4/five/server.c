@@ -17,17 +17,20 @@ opyright TU-Berlin, 2011-2014 #
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <netdb.h>
+#include <time.h>
 
 #define MAX_BUFFER_LENGTH 100
-void unpackData(unsigned char *buffer, char *command, int *t2tv_sec, int *t2tv_nsec, int *t3tv_sec, int *t3tv_nsec)
-void packData(unsigned char *buffer, timespec *t2, timespec *t3);
-int main(int argc, char *argv[])
-{
+
+void unpackData(unsigned char *buffer, char *command);
+void packData(unsigned char *buffer, struct timespec *t2, struct timespec *t3);
+
+int main(int argc, char *argv[]) {
     int response_result = 1;
     int sockfd;
     struct sockaddr_in own_addr, client_addr; // connector's address information
     struct hostent *he;
     int udpPort;
+	struct timespec t2, t3;
 
     printf("Der Zeitserver fährt hoch\n\n");
 
@@ -80,7 +83,7 @@ int main(int argc, char *argv[])
 	clock_gettime(CLOCK_REALTIME, &t3);
     //don't print but send
     if(response_result) {
-        packData(buffer, char *command, int *t2.tv_sec, int *t2.tv_nsec, int *t3.tv_sec, int *t3.tv_nsec);
+        packData(buffer, char *command, struct timespec *t2, struct timespec *t3);
         if((n=sendto(sockfd, buffer, 2, 0, (struct sockaddr*)&client_addr, client_addr_size)) != 2) {
             fprintf(stderr, "Error sending back data. expected 2 bytes but got %d \n", n);
             return 1;
@@ -105,15 +108,15 @@ void unpackData(unsigned char *buffer, char *command){
 } 
 
 // writes 4 bytes command, the rest null
-void packData(unsigned char *buffer, char *command, int *t2, int *t3) {
+void packData(unsigned char *buffer, char *command, struct timespec *t2, struct timepec *t3) {
 /* ******************************************************************
 TO BE DONE: pack data
 ******************************************************************* */
 	memcpy(buffer, command, 4);
-	*((short *)(buffer+4)) 	= t2->tv_sec;//es ist immerhin ein Zeiger, deswegen ->?!
-	*((short *)(buffer+8))	= t2->tv_nsec;
-	*((short *)(buffer+12)) = t3->tv_sec;
-	*((short *)(buffer+16)) = t3->tv_nsec;
+	*((short *)(buffer+4)) 	= t2.tv_sec;
+	*((short *)(buffer+8))	= t2.tv_nsec;
+	*((short *)(buffer+12)) = t3.tv_sec;
+	*((short *)(buffer+16)) = t3.tv_nsec;
 }
 
 	
