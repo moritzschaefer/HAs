@@ -25,12 +25,11 @@ void unpackData(unsigned char *buffer, char *command);
 void packData(unsigned char *buffer, struct timespec *t2, struct timespec *t3);
 
 int main(int argc, char *argv[]) {
-    int response_result = 1;
     int sockfd;
     struct sockaddr_in own_addr, client_addr; // connector's address information
     struct hostent *he;
     int udpPort;
-	struct timespec t2, t3;
+    struct timespec t2, t3;
 
     printf("Der Zeitserver fährt hoch\n\n");
 
@@ -38,10 +37,10 @@ int main(int argc, char *argv[]) {
         fprintf(stderr,"Usage: tcpServer udpPort\n");
         exit(1);
     }
-	//Port setzen
+    //Port setzen
     udpPort = atoi(argv[1]); //atoi holt aus einem String eine Zahl
 
-	//set a udp Server
+    //set a udp Server
     sockfd = socket(AF_INET, SOCK_DGRAM, IPPROTO_IP);
     if(sockfd == -1) {
         fprintf(stderr, "Error creating socket\n");
@@ -69,27 +68,30 @@ int main(int argc, char *argv[]) {
 
     char buffer[20];
 
-	//Zweiter Zeitstempel
-    clock_gettime(CLOCK_REALTIME, &t2);
-	
+
     int n;
-    if((n=recvfrom(sockfd, buffer, sizeof(buffer), 0, (struct sockaddr*)&client_addr, &client_addr_size)) != 20) {
-        fprintf(stderr, "Error receiving data. expected 20 bytes but got %d \n", n);
-        return 1;
-    }
-	printf("Request arrived");
-	
-	//Dritter Zeitstempel
-	clock_gettime(CLOCK_REALTIME, &t3);
-    //don't print but send
-    if(response_result) {
-        packData(buffer, char *command, struct timespec *t2, struct timespec *t3);
-        if((n=sendto(sockfd, buffer, 2, 0, (struct sockaddr*)&client_addr, client_addr_size)) != 2) {
+    while(1) {
+
+        if((n=recvfrom(sockfd, buffer, sizeof(buffer), 0, (struct sockaddr*)&client_addr, &client_addr_size)) != 20) {
+            fprintf(stderr, "Error receiving data. expected 20 bytes but got %d \n", n);
+            return 1;
+        }
+        //Zweiter Zeitstempel
+        clock_gettime(CLOCK_REALTIME, &t2);
+        printf("Request received");
+        if(!checkMessage(buffer)) {
+            fprintf(stderr, "bad message received");
+            return 1;
+        }
+        //Dritter Zeitstempel
+        clock_gettime(CLOCK_REALTIME, &t3);
+        //don't print but send
+        //define command
+        packData(buffer, command, &t2, &t3);
+        if((n=sendto(sockfd, buffer, 20, 0, (struct sockaddr*)&client_addr, client_addr_size)) != 20) {
             fprintf(stderr, "Error sending back data. expected 2 bytes but got %d \n", n);
             return 1;
         }
-    } else {
-        printf("Result sended");
     }
 
     if( close(sockfd) == -1 ) {
@@ -101,22 +103,25 @@ int main(int argc, char *argv[]) {
 
 
 /* ******************************************************************
-TO BE DONE: unpack data
-******************************************************************* */
+   TO BE DONE: unpack data
+ ******************************************************************* */
 void unpackData(unsigned char *buffer, char *command){
-	memcpy(command, buffer, 4);
-} 
+    memcpy(command, buffer, 4);
+}
 
 // writes 4 bytes command, the rest null
 void packData(unsigned char *buffer, char *command, struct timespec *t2, struct timepec *t3) {
-/* ******************************************************************
-TO BE DONE: pack data
-******************************************************************* */
-	memcpy(buffer, command, 4);
-	*((short *)(buffer+4)) 	= t2.tv_sec;
-	*((short *)(buffer+8))	= t2.tv_nsec;
-	*((short *)(buffer+12)) = t3.tv_sec;
-	*((short *)(buffer+16)) = t3.tv_nsec;
+    /* ******************************************************************
+       TO BE DONE: pack data
+     ******************************************************************* */
+    memcpy(buffer, command, 4);
+    *((short *)(buffer+4)) 	= t2.tv_sec;
+    *((short *)(buffer+8))	= t2.tv_nsec;
+    *((short *)(buffer+12)) = t3.tv_sec;
+    *((short *)(buffer+16)) = t3.tv_nsec;
 }
 
-	
+bool checkMessage(unsigned char *buffer) {
+    return true;
+}
+
