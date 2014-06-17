@@ -39,10 +39,10 @@ int main(int argc, char *argv[])
 	}
 
 	//set server port
-	serverPort = atoi(argv[1]);
+	serverPort = atoi(argv[2]);
 
 	//Resolv hostname to IP Address
-	if ((he=gethostbyname(argv[0])) == NULL) { // get the host info
+	if ((he=gethostbyname(argv[1])) == NULL) { // get the host info
 		herror("gethostbyname");
 		exit(1);
 	}

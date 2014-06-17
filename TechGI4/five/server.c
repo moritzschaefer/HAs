@@ -40,20 +40,24 @@ int main(int argc, char *argv[]) {
         fprintf(stderr,"Usage: udpPort\n");
         exit(1);
     }
+	printf("server port reading\n");
     //Port setzen
-    udpPort = atoi(argv[0]); //atoi holt aus einem String eine Zahl
-
+    udpPort = atoi(argv[1]); //atoi holt aus einem String eine Zahl
+	printf("server port is readed\n");	
+	printf("server create a socket\n");
+	
     //set a udp Server
     sockfd = socket(AF_INET, SOCK_DGRAM, IPPROTO_IP);
     if(sockfd == -1) {
         fprintf(stderr, "Error creating socket\n");
         return 1;
     }
-	printf("Server socked created");	
+	printf("Server socked created\n");	
 
     //Resolv hostname to IP Address
     if ((he=gethostbyname("localhost")) == NULL) { // get the host info
         herror("gethostbyname");
+	printf("servername couldn't set");
         exit(1);
     }
 	printf("Servername localhost is set");
