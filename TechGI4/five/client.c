@@ -1,6 +1,6 @@
 /*
 ############################################################################
-# CLIENT.C 
+# CLIENT.C
 opyright TU-Berlin, 2011-2014 #
 # Die Weitergabe, Veröffentlichung etc. auch in Teilen ist nicht gestattet #
 # #
@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
 	printf("Client starts\n");
 
 	if (argc != 3) {
-		fprintf(stderr,"Usage: serverName serverPort\n");
+		fprintf(stderr,"Usage: %s serverName serverPort\n", argv[0]);
 		exit(1);
 	}
 
@@ -98,7 +98,7 @@ int main(int argc, char *argv[])
 
 	//Calc the results
 	int offsetInSec = 0.5*((t4.tv_sec-t1.tv_sec)+(t3.tv_sec-t2.tv_sec));
-	int delayInSec  = (t4.tv_sec-t1.tv_sec)-(t3.tv_sec-t2.tv_sec);	
+	int delayInSec  = (t4.tv_sec-t1.tv_sec)-(t3.tv_sec-t2.tv_sec);
 
 	fprintf("Received result: %d", delayInSec);
 
