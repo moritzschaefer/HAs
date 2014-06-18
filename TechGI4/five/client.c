@@ -95,12 +95,12 @@ int main(int argc, char *argv[])
 	clock_gettime(CLOCK_REALTIME, &t4);
 	printf("t4 is taken\n");
 	unpackData(buffer,&t2,&t3);
-
+	printf("unpack succsessfull\n");
 	//Calc the results
 	int offsetInSec = 0.5*((t4.tv_sec-t1.tv_sec)+(t3.tv_sec-t2.tv_sec));
 	int delayInSec  = (t4.tv_sec-t1.tv_sec)-(t3.tv_sec-t2.tv_sec);
-
-	fprintf("Received result: %d", delayInSec);
+	//printf("das ergebnis ist:\n");
+	printf("Received result: %d", offsetInSec);
 
 	/* ******************************************************************
 	   TO BE DONE: Close socket
@@ -126,7 +126,8 @@ void packData(unsigned char *buffer) {
    TO BE DONE: unpack data
  ******************************************************************* */
 void unpackData(unsigned char *buffer, struct timespec *t2, struct timespec *t3) {
-	memcpy("RES", buffer, 4);
-	*t2 = *((struct timespec *)(buffer+4));
-	*t3 = *((struct timespec *)(buffer+12));
+	t2->tv_sec  = *((int*)(buffer+4));
+	t2->tv_nsec = *((int*)(buffer+8));
+	t3->tv_sec  = *((int*)(buffer+12));
+	t3->tv_nsec = *((int*)(buffer+16));
 }
