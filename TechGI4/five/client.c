@@ -97,10 +97,10 @@ int main(int argc, char *argv[])
 	unpackData(buffer,&t2,&t3);
 	printf("unpack succsessfull\n");
 	//Calc the results
-	int offsetInSec = 0.5*((t4.tv_sec-t1.tv_sec)+(t3.tv_sec-t2.tv_sec));
-	int delayInSec  = (t4.tv_sec-t1.tv_sec)-(t3.tv_sec-t2.tv_sec);
+	int offsetInSec = 0.5*((t4.tv_nsec-t1.tv_nsec)+(t3.tv_nsec-t2.tv_nsec));
+	int delayInSec  = (t4.tv_nsec-t1.tv_nsec)-(t3.tv_nsec-t2.tv_nsec);
 	//printf("das ergebnis ist:\n");
-	printf("Received result: %d", offsetInSec);
+	printf("Received result: %d\n", offsetInSec);
 
 	/* ******************************************************************
 	   TO BE DONE: Close socket
