@@ -25,7 +25,7 @@ opyright TU-Berlin, 2011-2014 #
 #define MAX_BUFFER_LENGTH 100
 
 int  unpackData(unsigned char *buffer);
-void packData(unsigned char *buffer, struct timespec *t2, struct timespec *t3);
+void packData(unsigned char *buffer, struct timespec *t2);
 
 int main(int argc, char *argv[]) {
     int sockfd;
@@ -49,7 +49,7 @@ int main(int argc, char *argv[]) {
     //set a udp Server
     sockfd = socket(AF_INET, SOCK_DGRAM, IPPROTO_IP);
     if(sockfd == -1) {
-        fprintf(stderr, "Error creating socket\n");
+        fprintf(stderr, "Error creating socket DAS HIER????\n");
         return 1;
     }
 	printf("Server socked created\n");	
@@ -81,28 +81,27 @@ int main(int argc, char *argv[]) {
     while(1) {
 		printf("server ist waiting for Request");
         if((n=recvfrom(sockfd, buffer, sizeof(buffer), 0, (struct sockaddr*)&client_addr, &client_addr_size)) != 20) {
-            fprintf(stderr, "Error receiving data. expected 20 bytes but got %d \n", n);
+            fprintf(stderr, "Server :::Error receiving data. expected 20 bytes but got %d \n", n);
             return 1;
         }
-
-		if(unpackData(buffer)==false){
-			printf("Error, unknown command");
-		}
-		
-        //Zweiter Zeitstempel
+	 //Zweiter Zeitstempel
         clock_gettime(CLOCK_REALTIME, &t2);
         printf("Request received");
         if(!checkMessage(buffer)) {
             fprintf(stderr, "bad message received");
             return 1;
         }
+	if(unpackData(buffer)==false){
+		printf("Error, unknown command");
+	}
+		
+       
         //Dritter Zeitstempel
-        clock_gettime(CLOCK_REALTIME, &t3);
         //don't print but send
         //define command
-        packData(buffer, &t2, &t3);
+        packData(buffer, &t2);
         if((n=sendto(sockfd, buffer, 20, 0, (struct sockaddr*)&client_addr, client_addr_size)) != 20) {
-            fprintf(stderr, "Error sending back data. expected 2 bytes but got %d \n", n);
+            fprintf(stderr, "Error sending back data. expected 20 bytes but got %d \n", n);
             return 1;
         }
     }
@@ -123,15 +122,17 @@ int unpackData(unsigned char *buffer){
 }
 
 // writes 4 bytes command, the rest null
-void packData(unsigned char *buffer, struct timespec *t2, struct timespec *t3) {
+void packData(unsigned char *buffer, struct timespec *t2) {
     /* ******************************************************************
        TO BE DONE: pack data
      ******************************************************************* */
+    struct timespec t3;
     memcpy(buffer, "RES", 4);
-    *((short *)(buffer+4)) 	= t2->tv_sec;
-    *((short *)(buffer+8))	= t2->tv_nsec;
-    *((short *)(buffer+12)) = t3->tv_sec;
-    *((short *)(buffer+16)) = t3->tv_nsec;
+    *((int *)(buffer+4))  = (int )(t2->tv_sec);
+    *((int *)(buffer+8))  = (int)(t2->tv_nsec);
+    clock_gettime(CLOCK_REALTIME, &t3);
+    *((int *)(buffer+12)) = (int)(t3.tv_sec);
+    *((int *)(buffer+16)) =(int) (t3.tv_nsec);
 }
 
 int checkMessage(unsigned char *buffer) {
