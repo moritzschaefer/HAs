@@ -79,18 +79,21 @@ int main(int argc, char *argv[]) {
 
     int n;
     while(1) {
-		printf("server ist waiting for Request");
+//		printf("server ist waiting for Request %d\n",sockfd);
         if((n=recvfrom(sockfd, buffer, sizeof(buffer), 0, (struct sockaddr*)&client_addr, &client_addr_size)) != 20) {
             fprintf(stderr, "Server :::Error receiving data. expected 20 bytes but got %d \n", n);
+	    printf("Folgende sockfd: %d  folgender addresse : %d \n ",sockfd,client_addr.sin_port);
+
             return 1;
         }
+
+        printf("Request received");
 	 //Zweiter Zeitstempel
 	sleeptime.tv_sec = 0;
 	sleeptime.tv_nsec= 500000000;
 	nanosleep(&sleeptime,NULL);       
 
         clock_gettime(CLOCK_REALTIME, &t2);
-        printf("Request received");
         if(!checkMessage(buffer)) {
             fprintf(stderr, "bad message received");
             return 1;

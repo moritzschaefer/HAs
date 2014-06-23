@@ -17,6 +17,7 @@ opyright TU-Berlin, 2011-2014 #
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <netdb.h>
+#include <math.h>
 
 #define MAX_BUFFER_LENGTH 100
 
@@ -63,10 +64,8 @@ int main(int argc, char *argv[])
 	memset(their_addr.sin_zero, '\0', sizeof their_addr.sin_zero);
 
 	printf("Client socket is rdy\n");
-
 	//ersten Zeitstempel nehmen
 	struct timespec t1,t2,t3,t4;
-	clock_gettime(CLOCK_REALTIME, &t1);
 
 	printf("t1 is taken\n");
 	/* ******************************************************************
@@ -83,20 +82,29 @@ int main(int argc, char *argv[])
 
 	socklen_t their_size;
 	int n;
-	if((n = sendto(sockfd, buffer, sizeof(buffer), 0, (const struct sockaddr *) &their_addr, sizeof(their_addr))) != 20) {
+	clock_gettime(CLOCK_REALTIME, &t1);
+	if((n = sendto(sockfd, buffer, sizeof(buffer), 0, (struct sockaddr *) &their_addr, sizeof(their_addr))) != 20) {
 		fprintf(stderr, "Error sending data. expected 20 Byte, was %d \n", n);
 	}
 	printf("waitung for response");
 
-	if(recvfrom(sockfd, buffer, 20, 0, (const struct sockaddr *) &their_addr, &their_size) != 20) {
+	if(recvfrom(sockfd, buffer, 20, 0, (struct sockaddr *) &their_addr, &their_size) != 20) {
 		fprintf(stderr, "Error receiving data.\n");
 	}
-	printf("Answer from server comes\n");
 	clock_gettime(CLOCK_REALTIME, &t4);
+	printf("Answer from server comes\n");
 	printf("t4 is taken\n");
 	unpackData(buffer,&t2,&t3);
 	printf("unpack succsessfull\n");
 	//Calc the results
+	long tt1=t1.tv_sec*pow(10,9)+t1.tv_nsec;
+	long tt2=t2.tv_sec*pow(10,9)+t2.tv_nsec;
+	long tt3=t3.tv_sec*pow(10,9)+t3.tv_nsec;
+	long tt4=t4.tv_sec*pow(10,9)+t4.tv_nsec;
+
+	long offset = 0.5*((tt2-tt1)+(tt3-tt4));
+	long delay = ((tt4-tt1)-(tt3-tt2));
+	/*
 	int offsetInNsec = 0.5*((t4.tv_nsec-t1.tv_nsec)+(t3.tv_nsec-t2.tv_nsec));
 	int delayInNsec  = (t4.tv_nsec-t1.tv_nsec)-(t3.tv_nsec-t2.tv_nsec);
 	int offsetInSec  = 0.5*((t4.tv_sec-t1.tv_sec)+(t3.tv_sec-t2.tv_sec));
@@ -105,8 +113,11 @@ int main(int argc, char *argv[])
 	//printf("das ergebnis ist:\n");
 	printf("Received in Nsec result: %d\n", offsetInNsec);
 	printf("Received in Sec result: %d\n", offsetInSec);
-	printf("%d %d", sizeof(int), sizeof(long));
-
+	printf("Delay: %d Sec, %d Nsec \n",delayInSec, delayInNsec);
+	*/
+	
+	printf("Offset: %ld  NSec\n", offset);
+	printf("Delay: %ld NSec\n",delay);
 	/* ******************************************************************
 	   TO BE DONE: Close socket
 	 ******************************************************************* */
@@ -124,6 +135,10 @@ int main(int argc, char *argv[])
  ******************************************************************* */
 void packData(unsigned char *buffer) {
 	memcpy(buffer, "REQ", 4);
+	*((int*)(buffer+4))=0;
+	*((int*)(buffer+8))=0;
+	*((int*)(buffer+12))=0;
+	*((int*)(buffer+16))=0;
 }
 
 
