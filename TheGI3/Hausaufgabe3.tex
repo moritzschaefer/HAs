@@ -1,0 +1,145 @@
+\documentclass[10pt,a4paper,german,landscape,fleqn]{article} \usepackage[utf8]{inputenc} % damit man im Text äöü verwenden kann
+
+\usepackage{amsmath} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{graphicx} \usepackage{paralist} \usepackage{etoolbox}
+\setlength{\mathindent}{0pt}
+
+\usepackage[ngerman]{babel}
+\usepackage{geometry}
+\geometry{verbose,a4paper,tmargin=25mm,bmargin=25mm,lmargin=15mm,rmargin=20mm}
+\usepackage[arrow, matrix, curve]{xy}
+
+\usepackage{mathtools}
+
+\usepackage{semantic}
+\usepackage{xifthen} \usepackage{ifthen} \usepackage{ifmtarg} %\usepackage{graphicx} %wenn man die diagrame lieber so einscannt
+
+\usepackage{paralist} % mehr möglichkeiten bei Aufzählungen
+
+\usepackage{tikz} % tiks bedeutet "tikz ist kein Zeichenprogramm" % wird für die grafiken benötigt
+
+\usepackage{tikz-cd} %Create commutative diagrams with TikZ (http://www.ctan.org/pkg/tikz-cd) \usetikzlibrary{matrix,arrows,decorations.pathmorphing} %kp, copy-pasted
+
+\RequirePackage{etoolbox}
+
+\RequirePackage{ifthen}
+
+\RequirePackage{xifthen}
+
+\RequirePackage{ifmtarg} %TODO: Wie kann ich die TheGi Macros einbinden?
+
+\usepackage{Macros} %TheGi Macros (http://stackoverflow.com/questions/5993965/include-sty-file-from-a-super-subdirectory-of-main-tex-file) %\usepackage{bussproofs}
+\newcommand{\ausws}[1]{ \langle \cdot #1 \cdot \rangle }
+\newcommand{\auswl}[1]{ [ \cdot #1 \cdot ] }
+\newcommand{\auswf}[1]{[\![ #1 ]\!]}
+
+
+\begin{document}
+
+\title{TheGI III \\
+4. Abgabe\\
+Tutor:Nadine Rohde Raum: E-N 187 Uhrzeit: Mittwoch 12-14 Uhr \\ } % Declares the document's title.
+\author{Moritz Schäfer (350651), \\
+Marco Morik (348689), Max Gotthardt(350464)} % Declares the author's name.
+\date{June 19 2014} % Deleting this command produces today's date.
+
+\maketitle
+
+
+
+\newpage
+\section*{Hausaufgabe 8}
+\subsection*{Aufgabe 1:}
+\subsubsection*{1.a):}
+1:
+\begin{align*}
+\auswf{F_1} &= \ausws{a} ( \auswl{a} \emptyset \cap \auswl{b} \emptyset \cap \auswl{c} \emptyset ) \cup \ausws{b} (\auswl{a} \emptyset \cap \auswl{b} \cap \auswl{c} \emptyset ) \cup \ausws{c}( \auswl{a} \emptyset \cap \auswl{b} \emptyset \cap \auswl{c} \emptyset )\\
+&= \ausws{a} \{p_7\} \cup \ausws{b} \{p_7\} \cup \ausws{c} \{p_7\} \\
+&= \{p_5\} \cup \{p_6\} \cup \{p_4\}  \\
+&= \{ p_5, p_6, p_4 \}
+\end{align*}
+\\
+2:
+\begin{align*}
+\auswf{F_2} &= \ausws{a} \ausws{a} Proc \cap \ausws{a} \ausws{b} Proc \\
+&= \ausws{a} \{p_1,p_2,p_3,p_5,q_1,q_2,q_3,q_5,q_7,q_8,q_9 \} \cap \ausws{a} \{p_1,p_4,p_5,p_6,q_1,q_3,q_5,q_6,q_9,q_10 \} \\
+&= \{p_3,q_1,q_2,q_3,q_7,q_8\} \cap \{p_1,p_2,q_1,q_2,q_3,q_7\} \\
+&= \{q_1,q_2,q_3,q_7 \}
+\end{align*}
+\\
+3:
+\begin{align*}
+\auswf{F_3} &= \auswl{b}( \ausws{c} \auswl{a} \emptyset \cup \ausws{b} \auswl{a} \emptyset) \\
+&= \auswl{b}(\ausws{c}\{p_4,p_6,p_7,q_4,q_6,q_10\} \cup \ausws{b} \{p_4,p_6,p_7,q_4,q_6,q_10 \} ) \\
+&= \auswl{b}( \{p_4,p_5,q_4,q_6,q_7\} \cup \{p_4,p_6,q_5,q_6\}) \\
+&= \auswl{b} \{p_4,p_5,p_6,q_4,q_5,q_6,q_7 \} \\
+&= \{p_2,p_3,p_4,p_7,q_2,q_4,q_5,q_7,q_8\}
+\end{align*}
+\\
+4:
+\begin{align*}
+\auswf{F_4} &= \auswl{c} \ausws{a} \{p_1,p_2,p_3,p_5,q_1,q_2,q_3,q_5,q_7,q_8,q_9 \} \cup \ausws{c} \{p_1,p_4,p_5,p_6,q_1,q_3,q_5,q_6,q_9,q_10 \}  \\
+&= \auswl{c} \{p_3,q_1,q_2,q_7,q_8\} \cup \{p_2,p_5,q_2,q_4,q_7 \} \\
+&= \{p_1,p_3,p_7,q_1,q_2,q_3,q_5,q_8,q_9,q_10\} \cup \{p_2,p_5,q_2,q_4,q_7 \} \\
+&= \{p_1,p_2,p_3,p_5,p_7,q_1,q_2,q_3,q_4,q_5,q_7,q_8,q_9,q_{10}\}
+\end{align*}
+\newpage
+\subsection*{Aufgabe 2:}
+\subsubsection*{a)}
+i:\\
+$F_i = \langle auflegen \rangle \langle warte1min \rangle \langle warte1min \rangle \langle warte1min \rangle \langle warte1min \rangle \langle wenden \rangle \langle warte1min \rangle \langle warte1min \rangle \langle warte1min \rangle \langle warte1min \rangle \langle essen \rangle tt $ \\
+\\
+ii:\\
+$F_{ii} = \langle marinieren \rangle [marinieren] ff$\\
+Die Formel besagt nur, dass nicht 2 mal direkt hintereinander mariniert wird. Mit einer Aktion dazwischen kann immer noch 2fach mariniert werden \\
+\\
+iii: \\
+$F_{iii} = \langle wenden \rangle \langle warte1min \rangle \langle wenden \rangle tt $ \\
+\\ \\ 
+iv: 
+\begin{align*}
+~\\[-25pt]
+F_{iv} &= ( \langle wenden \rangle \langle warte1min \rangle \langle wenden \rangle tt )^c \\
+&= [wenden] [warte1min] [wenden] ff
+\end{align*}
+\\
+v:
+\begin{align*}
+~\\[-25pt]
+F_{v} =& [essen][loeschen] ff \\
+&\wedge [auflegen] ( \langle essen \rangle \langle loeschen \rangle tt \vee \langle warten \rangle tt ) \\
+&\wedge [warte1min] ( \langle essen \rangle \langle loeschen \rangle tt \vee \langle warten \rangle tt ) \\
+&\wedge [wenden] ( \langle essen \rangle \langle loeschen \rangle tt \vee \langle warten \rangle tt ) 
+\end{align*}
+\subsubsection*{b)}
+\begin{align*}
+\auswf{F_i} &= \{GuF,N\} \\
+\auswf{F_{ii}} &= Proc \\
+\auswf{F_{iii}} &= \{W \} \\
+\auswf{F_{iv}} &= Proc \setminus \{W\} \\
+\auswf{F_{v}} &= Proc \setminus \{S\}
+\end{align*}
+\\
+i:\\
+Ja, da $GuF \in \auswf{F_i}$\\ \\
+ii: \\
+Ja, da Zustand $w \models F_{iii}$ bzw. $w \in \auswf{F_{iii}}$\\ \\
+iii: \\
+Nein, da Zustand  $S \nvDash F_v $ bzw. $S \notin \auswf{F_v} $ \\
+Somit gilt dies nicht für Alle Zustände 
+\newpage
+\subsection*{Aufgabe 3:}
+
+
+  \begin{minipage}{0.4\linewidth-7.112pt}
+   \makebox[\linewidth]{
+    \begin{xy}
+      \xymatrix
+      {
+       & \Pro{p_1} \ar[dr]^{\In{c}{}} \ar[dl]^{\In{a}{}} & \\
+       \ar @(ul,dl)_{\In{a}{}} \Pro{p_2} \ar[dr]^{\In{b}{}}  & & \Pro{p_4} \\
+       & \Pro{p_3} \ar[ur]^{\In{b}{}}& 
+      }
+    \end{xy}
+   }
+  \end{minipage}
+\end{document}
