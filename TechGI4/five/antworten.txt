@@ -4,3 +4,7 @@ Bei der sleepfunktion Zwischen den beiden Zeitmessungen verändert sich der Offs
 Bei der Sleepfunktion vor dem ersten Zeitmessen erhöht sich der Offset um 250.000.000 Nsec, und der Delay um 500.000.000 Nsec,
 da von einer Symetrischen Kommunikation ausgegangen wird.
 
+
+
+Der Vorteil dieses Verfahrens ist, dass die Zeit, die der Sendevorgang braucht direkt mit eingerechnet wird, so also die Zeitmessung noch etwas genauer ist.
+Den großen Fehler aus teil b) wird dies aber auch nicht verhindern, weil ein Sleep zwischen ankommen und Zeitnahme  die Zeit immernoch vergrößert. 
