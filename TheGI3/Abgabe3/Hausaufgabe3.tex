@@ -36,7 +36,7 @@
 \begin{document}
 
 \title{TheGI III \\
-4. Abgabe\\
+3. Abgabe\\
 Tutor:Nadine Rohde Raum: E-N 187 Uhrzeit: Mittwoch 12-14 Uhr \\ } % Declares the document's title.
 \author{Moritz Schäfer (350651), \\
 Marco Morik (348689), Max Gotthardt(350464)} % Declares the author's name.
@@ -108,7 +108,8 @@ v:
 F_{v} =& [essen][loeschen] ff \\
 &\wedge [auflegen] ( \langle essen \rangle \langle loeschen \rangle tt \vee \langle warten \rangle tt ) \\
 &\wedge [warte1min] ( \langle essen \rangle \langle loeschen \rangle tt \vee \langle warten \rangle tt ) \\
-&\wedge [wenden] ( \langle essen \rangle \langle loeschen \rangle tt \vee \langle warten \rangle tt ) 
+&\wedge [wenden] ( \langle essen \rangle \langle loeschen \rangle tt \vee \langle warten \rangle tt )  \\
+ =& [essen][loeschen] ff \wedge [\{auflegen,warte1min,wenden\}] ( \langle essen \rangle \langle loeschen \rangle tt \vee \langle warten \rangle tt )
 \end{align*}
 \subsubsection*{b)}
 \begin{align*}
@@ -142,4 +143,41 @@ Somit gilt dies nicht für Alle Zustände
     \end{xy}
    }
   \end{minipage}
+\newpage
+\section*{Hausaufgabe 9}
+\subsection*{Aufgabe 4:}
+p und q sind nicht stark bisimilar, es gibt die unterscheidende Formel $F_1$ : \\
+$F_1 = \langle a \rangle \langle a \rangle \langle b \rangle tt $ \\
+$q \in \auswf{F_1}$ und $p \notin \auswf{F_1}$\\
+\\
+\\
+r und s sind nicht stark bisimilar, es gibt die unterscheidende Formel $F_2$ : \\
+$F_2 = \langle a \rangle [b] ff $ \\
+$r \in \auswf{F_2}$ und $s \notin \auswf{F_2}$\\
+\\
+\\
+u und v sind nicht stark bisimilar, es gibt die unterscheidende Formel $F_3$ : \\
+$F_3 = \langle a \rangle (\langle b \rangle tt \wedge \langle c \rangle tt ) $\\
+$v \in \auswf{F_3}$ und $u \notin \auswf{F_3}$\\
+\subsection*{Aufgabe 5:}
+P und Q sind nicht stark bisimilar, es gibt die unterscheidende Formel $F_1$ : \\
+$F_1 = \langle a \rangle \langle a \rangle tt$ \\
+$ P\in \auswf{F_1}$ und $Q \notin \auswf{F_1}$\\
+\\
+\\
+U und V sind stark bisimilar, es gibt keine unterscheidende Formel $F_2$ : \\
+\\
+\\
+X und Y sind nicht stark bisimilar, es gibt die unterscheidende Formel $F_3$ : \\
+$F_3 =  [a] \langle b \rangle tt$ \\
+$X \in \auswf{F_3}$ und $Y \notin \auswf{F_3}$\\
+\\
+\\
+$S_n$ und T sind nicht stark bisimilar, es gibt die unterscheidende Formel $F_4$ : \\
+$F_4 = \langle a_{10} \rangle \langle a_1 \rangle tt $ \\
+$T \in \auswf{F_4}$ und $S_n \notin \auswf{F_4}$\\
+\\
+\\
+\subsection*{Aufgabe 6:}
+
 \end{document}
