@@ -1,0 +1,28 @@
+a) 62856
+b) 614,574 bytes
+c)
+00:0f:3d:fc:75:2b -> 192.168.0.1
+00:0d:56:c7:76:0e -> 192.168.0.4
+00:11:25:43:ca:fe -> 192.168.0.2
+d) 172
+e) Siehe c)
+f) 100,00%
+g) 90,07%
+h) SSH, HTTP, SSL, BitTorrent, RTP
+i) DNS, NetBIOS DS, NetBIOS NS, RDT
+j) IP
+k) ARP
+l) 34
+m) 23(>200), 26757(==128), 105(==48)
+n)a) 14 Bytes
+  b) 20 Bytes
+  c) 1360 Bytes
+  d) 20 Bytes
+  e) 1340 Bytes
+o) Viele Pakete haben eine Paketlänge von 40-79 Bytes ( 41,08% ), Viele haben eine weitaus größere Paketlänge von 1280-2559 Bytes ( 33,32% ) Der Rest verteilt sich dazwischen.
+p) Es ergibt sich ein ähnliches Bild: Viele Pakete haben eine Paketlänge von 40-79 Bytes ( 32,54% ), Viele haben eine weitaus größere Paketlänge von 1280-2559 Bytes ( 58,10% ) Der Rest verteilt sich dazwischen.
+q) Host: 136.159.5.20
+r) Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.12) Gecko/20050915 Firefox/1.0.7
+s) Streaming läuft normal über UDP. Das einzige erkennbare ist RDT das über UDP läuft. Ein Dateiname ist daraus nicht extrahierbar.
+t) Ja über BitTorrent. Wir könnten ein Histogram erstellen. Oder die Gesamtbytes angeben oder die Anzahl der beteiligten Peers. Was wollt ihr wissen?
+
