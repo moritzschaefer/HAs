@@ -1,0 +1,127 @@
+\documentclass[10pt,a4paper,german,landscape,fleqn]{article} \usepackage[utf8]{inputenc} % damit man im Text äöü verwenden kann
+
+\usepackage{amsmath} \usepackage{amsfonts} \usepackage{amssymb} \usepackage{graphicx} \usepackage{paralist} \usepackage{etoolbox}
+\setlength{\mathindent}{0pt}
+
+\usepackage[ngerman]{babel}
+\usepackage{geometry}
+\geometry{verbose,a4paper,tmargin=25mm,bmargin=25mm,lmargin=15mm,rmargin=20mm}
+\usepackage[arrow, matrix, curve]{xy}
+
+\usepackage{mathtools}
+
+\usepackage{semantic}
+\usepackage{xifthen} \usepackage{ifthen} \usepackage{ifmtarg} %\usepackage{graphicx} %wenn man die diagrame lieber so einscannt
+
+\usepackage{paralist} % mehr möglichkeiten bei Aufzählungen
+
+\usepackage{tikz} % tiks bedeutet "tikz ist kein Zeichenprogramm" % wird für die grafiken benötigt
+
+\usepackage{tikz-cd} %Create commutative diagrams with TikZ (http://www.ctan.org/pkg/tikz-cd) \usetikzlibrary{matrix,arrows,decorations.pathmorphing} %kp, copy-pasted
+
+\RequirePackage{etoolbox}
+
+\RequirePackage{ifthen}
+
+\RequirePackage{xifthen}
+
+\RequirePackage{ifmtarg} %TODO: Wie kann ich die TheGi Macros einbinden?
+
+\usepackage{Macros} %TheGi Macros (http://stackoverflow.com/questions/5993965/include-sty-file-from-a-super-subdirectory-of-main-tex-file) %\usepackage{bussproofs}
+\newcommand{\ausws}[1]{ \langle \cdot #1 \cdot \rangle }
+\newcommand{\auswl}[1]{ [ \cdot #1 \cdot ] }
+\newcommand{\auswf}[1]{[\![ #1 ]\!]}
+
+
+\begin{document}
+
+\title{TheGI III \\
+3. Abgabe\\
+Tutor:Nadine Rohde Raum: E-N 187 Uhrzeit: Mittwoch 12-14 Uhr \\ } % Declares the document's title.
+\author{Moritz Schäfer (350651), \\
+Marco Morik (348689), Max Gotthardt(350464)} % Declares the author's name.
+\date{June 19 2014} % Deleting this command produces today's date.
+
+\maketitle
+
+
+
+\newpage
+\section*{Hausaufgabe 11}
+\subsection*{Aufgabe 1:}
+\subsubsection*{a)}
+Zuerst Berechnen wir $ X \HMmax \langle a \rangle X \wedge [c] \false $ \\
+Sei $F_X = \langle a \rangle X \wedge [c]$
+\begin{align*}
+\OSem{F_X}{\Proc} &= \ausws{a} \Proc \cap \auswl{c} \emptyset \\
+&= \{p_2,p_1,p_5\} \cap \{p_2,p_3,p_5,p_6\} \\
+&= \{p_2,p_5\}\\
+(\OSem{F_X}{\Proc})^2 &= \ausws{a} \{p_2,p_5\} \cap \auswl{c} \emptyset \\
+&= \{p_2\} \cap \{p_2,p_3,p_5,p_6\} \\
+&= \{p_2\}\\
+(\OSem{F_X}{\Proc})^3 &= \ausws{a} \{p_2\} \cap \auswl{c} \emptyset \\
+&= \{p_2\} \cap \{p_2,p_3,p_5,p_6\} \\
+&= \{p_2\}\\
+\end{align*}
+Nun berechnen wir $\auswf{Y}$, Wobei $Y\HMmax \langle b \rangle X \wedge( [\Act] \false \vee \langle \Act \rangle Y)$ \\
+Sei $F_Y = \langle b \rangle X \wedge( [\Act] \false \vee \langle \Act \rangle Y)$ 
+\begin{align*}
+\OSem{F_Y}{\Proc} &= \ausws{b}\{p_2\} \cap ( \auswl{\Act} \emptyset \cup \ausws{\Act}\Proc \\
+&= \{p_1\} \cap (\{p_6\} \cup \{ p_1,p_2,p_3,p_4,p_5\}\\
+&= \{p_1\} \\
+\OSem{F_Y}{}^2(\Proc) &= \ausws{b}\{p_2\} \cap ( \auswl{\Act} \emptyset \cup \ausws{\Act}\{p_1\} \\
+&= \{p_1\} \cap (\{p_6\} \cup \emptyset)\\
+&= \emptyset \\
+\OSem{F_Y}{}^3(\Proc) &= \ausws{b}\{p_2\} \cap ( \auswl{\Act} \emptyset \cup \ausws{\Act}\emptyset \\
+&= \{p_1\} \cap (\{p_6\} \cup \emptyset)\\
+&= \emptyset
+\end{align*}
+Folglich ist $Safe(\langle b \rangle X)$ berechnet gleich $\emptyset$ \\
+\subsubsection*{b)}
+Zuerst berechnen wir X: \\
+Sei $F_X = \langle a \rangle X \vee \langle b \rangle X $
+\begin{align*}
+\OSem{F_X}{\Proc} &= \ausws{a} \Proc \cup \ausws{b} \Proc \\
+&= \{p_1,p_2,p_5\} \cup \{p_1,p_3,p_4\} \\
+&= \{p_1,p_2,p_3,p_4,p_5\} \\
+\OSem{F_X}{}^2(\Proc) &= \ausws{a}\{p_1,p_2,p_3,p_4,p_5\} \cup \ausws{b} \{p_1,p_2,p_3,p_4,p_5\} \\
+&= \{p_1,p_2,p_5\} \cup \{p_1,p_3\} \\
+&= \{p_1,p_2,p_3,p_5\} \\
+\OSem{F_X}{}^3(\Proc) &= \ausws{a}\{p_1,p_2,p_3,p_5\} \cup \ausws{b} \{p_1,p_2,p_3,p_5\} \\
+&= \{p_1,p_2,p_5\} \cup \{p_1\} \\
+&= \{p_1,p_2,p_5\} \\
+\OSem{F_X}{}^4(\Proc) &= \ausws{a}\{p_1,p_2,p_5\} \cup \ausws{b} \{p_1,p_2,p_5\} \\
+&= \{p_1,p_2\} \cup \{p_1\} \\
+&= \{p_1,p_2\} \\
+\OSem{F_X}{}^5(\Proc) &= \ausws{a}\{p_1,p_2\} \cup \ausws{b} \{p_1,p_2\} \\
+&= \{p_1,p_2\} \cup \{p_1\} \\
+&= \{p_1,p_2\} \\
+\end{align*}
+Nun Können wir F berechnen \\
+\begin{align*}
+\OSem{F}{}(\emptyset) &= \auswl{b} \{p_1,p_2\} \cup \auswl{b} \emptyset \\
+&= \{p_1,p_2,p_5,p_6\} \cup \{p_2,p_5,p_6\} \\
+&= \{p_1,p_2,p_5,p_6\} \\
+\OSem{F}{}^2(\emptyset) &= \auswl{b} \{p_1,p_2\} \cup \auswl{b} \{p_1,p_2,p_5,p_6\}  \\
+&= \{p_1,p_2,p_5,p_6\} \cup \{p_1,p_2,p_4,p_5,p_6\} \\
+&= \{p_1,p_2,p_4,p_5,p_6\} \\
+\OSem{F}{}^3(\emptyset) &= \auswl{b} \{p_1,p_2\} \cup \auswl{b} \{p_1,p_2,p_4,p_5,p_6\}  \\
+&= \{p_1,p_2,p_5,p_6\} \cup \{p_1,p_2,p_3,p_4,p_5,p_6\} \\
+&= \{p_1,p_2,p_3,p_4,p_5,p_6\} \\
+\OSem{F}{}^4(\emptyset) &= \auswl{b} \{p_1,p_2\} \cup \auswl{b} \{p_1,p_2,p_3,p_4,p_5,p_6\}  \\
+&= \{p_1,p_2,p_5,p_6\} \cup \{p_1,p_2,p_3,p_4,p_5,p_6\} \\
+&= \{p_1,p_2,p_3,p_4,p_5,p_6\} \\
+\end{align*}
+Somit gilt F in jedem Zustand.
+\subsection*{Aufgabe 2:}
+\subsubsection*{a)}
+$F = Inv( \langle \ddot{o}ffnen \rangle \true )$ \\
+Explizit: $ F=X \quad  \quad X \HMmax \langle \ddot{o}ffnen \rangle \true \wedge [\Act ]X$
+\subsubsection*{b)}
+$F = Even(\langle beenden \rangle \true) $ \\
+Explizit: $ F=X \quad  \quad X \HMmin \langle beenden \rangle \true  \vee (\langle \Act \rangle \true \wedge [\Act]X) $
+\subsubsection*{c)}
+$F = Even(\langle fahren \rangle \true) \textbf{U}^w [\ddot{o}ffnen]\false$ \\
+Explizit: $ F=X \quad ; \quad X \HMmax [\ddot{o}ffnen]\false \vee ( G \wedge [\Act ] X )$ \quad ; \quad
+$G \HMmin \langle fahren \rangle \true \vee (\langle \Act \rangle \true \wedge [\Act]G )$\\
+\end{document}
