@@ -36,7 +36,7 @@
 \begin{document}
 
 \title{TheGI III \\
-4. Abgabe\\
+3. Abgabe\\
 Tutor:Nadine Rohde Raum: E-N 187 Uhrzeit: Mittwoch 12-14 Uhr \\ } % Declares the document's title.
 \author{Moritz Schäfer (350651), \\
 Marco Morik (348689), Max Gotthardt(350464)} % Declares the author's name.
@@ -108,7 +108,8 @@ v:
 F_{v} =& [essen][loeschen] ff \\
 &\wedge [auflegen] ( \langle essen \rangle \langle loeschen \rangle tt \vee \langle warten \rangle tt ) \\
 &\wedge [warte1min] ( \langle essen \rangle \langle loeschen \rangle tt \vee \langle warten \rangle tt ) \\
-&\wedge [wenden] ( \langle essen \rangle \langle loeschen \rangle tt \vee \langle warten \rangle tt ) 
+&\wedge [wenden] ( \langle essen \rangle \langle loeschen \rangle tt \vee \langle warten \rangle tt )  \\
+ =& [essen][loeschen] ff \wedge [\{auflegen,warte1min,wenden\}] ( \langle essen \rangle \langle loeschen \rangle tt \vee \langle warten \rangle tt )
 \end{align*}
 \subsubsection*{b)}
 \begin{align*}
@@ -142,4 +143,138 @@ Somit gilt dies nicht für Alle Zustände
     \end{xy}
    }
   \end{minipage}
+\newpage
+\section*{Hausaufgabe 9}
+\subsection*{Aufgabe 4:}
+p und q sind nicht stark bisimilar, es gibt die unterscheidende Formel $F_1$ : \\
+$F_1 = \langle a \rangle \langle a \rangle \langle b \rangle tt $ \\
+$q \in \auswf{F_1}$ und $p \notin \auswf{F_1}$\\
+\\
+\\
+r und s sind nicht stark bisimilar, es gibt die unterscheidende Formel $F_2$ : \\
+$F_2 = \langle a \rangle [b] ff $ \\
+$r \in \auswf{F_2}$ und $s \notin \auswf{F_2}$\\
+\\
+\\
+u und v sind nicht stark bisimilar, es gibt die unterscheidende Formel $F_3$ : \\
+$F_3 = \langle a \rangle (\langle b \rangle tt \wedge \langle c \rangle tt ) $\\
+$v \in \auswf{F_3}$ und $u \notin \auswf{F_3}$\\
+\subsection*{Aufgabe 5:}
+P und Q sind nicht stark bisimilar, es gibt die unterscheidende Formel $F_1$ : \\
+$F_1 = \langle a \rangle \langle a \rangle tt$ \\
+$ P\in \auswf{F_1}$ und $Q \notin \auswf{F_1}$\\
+\\
+\\
+U und V sind stark bisimilar, es gibt keine unterscheidende Formel $F_2$ : \\
+\\
+\\
+X und Y sind nicht stark bisimilar, es gibt die unterscheidende Formel $F_3$ : \\
+$F_3 =  [a] \langle b \rangle tt$ \\
+$X \in \auswf{F_3}$ und $Y \notin \auswf{F_3}$\\
+\\
+\\
+$S_n$ und T sind nicht stark bisimilar, es gibt die unterscheidende Formel $F_4$ : \\
+$F_4 = \langle a_{10} \rangle \langle a_1 \rangle tt $ \\
+$T \in \auswf{F_4}$ und $S_n \notin \auswf{F_4}$\\
+\\
+\\
+\subsection*{Aufgabe 6:}
+z.Z. P$\bisim _n Q$ für alle n$\in \mathbb{N} \implies P \bisim Q $ \\
+Annahme: $P \bisim _n Q $ für alle n$\in \mathbb{N}$\\
+z.Z. $P\bisim Q$\\
+$B= \{ (R,S) | R,S \in Proc \wedge R \bisim _n S$ für alle $n\in \mathbb{N} \} $\\ \\
+Wiederspruch: $R \CCSTrans {\alpha} R'$ , aber $ \neg \exists S \CCSTrans {\alpha}S'.(R',S')\in B$ für $\alpha\in \Act$ beliebig aber fest \\
+Da T bild-endlich gilt: $\#(Der(S,\alpha))\in \mathbb{N}$, also $\{S'_1,...,S'_n\}$ \\
+$\forall i \in \{1,...,n\}$, gibt es ein $p_i \in \mathbb{N}$ mit $ \neg (R' \bisim _{p_i} S_i')$ \\
+Daraus folgt, das es ein $p_{max}= max(\{p_1,...p_n\})+1$ gibt für das  gilt: \\
+$ \neg( R \bisim _{p_{max}} S)$ (Da  sowohl $R \CCSTrans {\alpha} R'$ , als auch $S\CCSTrans {\alpha}S' $) \\
+WIEDERSPRUCH!!!\\
+Somit muss gelten $P\bisim Q $\\
+
+\newpage
+\section*{Hausaufgabe 10:}
+\subsection*{Aufgabe 7:}
+Zuerst zeigen wir \\
+\\
+Induktions-Anfang: \\
+\\
+$\OSem{X}{S} = S$  \\
+$\OSem{X}{A} = A$ , wenn $S \subseteq A$ ,folgt daraus $\OSem{X}{S} \subseteq \OSem{X}{A}$ , daher ist $\OSem{X}{}$ monoton\\ \\
+$\OSem{\true}{S} = \Proc$  \\
+$\OSem{\true}{A} = \Proc$ , da $\Proc \subseteq \Proc$, folgt daraus $\OSem{\true}{}$ ist monoton \\ \\
+$\OSem{\false}{S} = \emptyset$ \\
+$\OSem{\false}{A} = \emptyset$ ,da $\emptyset \subseteq \emptyset$, folgt daraus $\OSem{\false}{}$ ist monoton \\ \\
+InduktionsAnnahme:
+$\OSem{F}{A}$ ist monoton \\ \\
+InduktionsSchritt:\\
+\textbf{Disjunktion:} \\
+$\OSem{F \lor G}{S} = \OSem{F}{S} \cup \OSem{G}{S}$ \\
+$\OSem{F \lor G}{A} = \OSem{F}{A} \cup \OSem{G}{A}$ \\ \\
+Da Annahme $\OSem{F}{S} \subseteq \OSem{F}{A}$  \\
+Da Annahme $\OSem{G}{S} \subseteq \OSem{G}{A}$  \\ \\
+Somit ist auch die Vereinigung eine Teilmenge \\
+$\OSem{F}{S} \cup \OSem{G}{S} \subseteq \OSem{F}{A} \cup \OSem{G}{A}$ \\
+Daraus folgt, dass die Disjunktion $\OSem{F \lor G}{}$ monton ist  \\ \\ 
+\textbf{Bedingung:} \\
+$\OSem{[a]}{S} = \auswl{a}\OSem{F}{S}$ , und  $\auswl{a} \OSem{F}{S} = \{p \in \Proc \mid \forall p' \in Der(p,a).p' \in \OSem{F}{S}\}$ \\
+$\OSem{[a]}{A} = \auswl{a}\OSem{F}{A}$ , und $\auswl{a}\OSem{F}{A} = \{p \in \Proc \mid \forall p' \in Der(p,a).p' \in \OSem{F}{A}\}$ \\
+Da $\OSem{F}{S} \subseteq \OSem{F}{A}$, folgt : \\
+\begin{align*}
+\auswl{a}\OSem{F}{S} &= \{p \in \Proc \mid \forall p' \in Der(p,a).p' \in \OSem{F}{S}\} \\
+ & \subseteq \auswl{a}\OSem{F}{A} = \{p \in \Proc \mid \forall p' \in Der(p,a).p' \in \OSem{F}{A}\} \\
+ &=\auswl{a}\OSem{F}{A}
+\end{align*}
+Daher ist auch die Bedingung $\OSem{[a]}{}$ monoton
+
+\subsection*{Aufgabe 8:}
+\subsubsection*{a)}
+$F_i = X$ \\
+$X \HMmax [\Act ] X \wedge (\langle a \rangle \true \vee \langle b \rangle \true $)
+\subsubsection*{b)}
+$F_{ii} = \langle c \rangle \true \wedge [a]X$ \\
+$X \HMmin \langle \Act \rangle X \vee [a] \false \vee \langle b \rangle \true $
+
+\subsection*{Aufgabe 9:}
+\subsubsection*{a)}
+$\fix \OSem{(\langle a \rangle \true \vee \langle b \rangle \true ) \wedge [\Act ]X}{}= (\OSem {(\langle a \rangle \true \vee \langle b \rangle \true )\wedge [\Act ]X )}{\emptyset})^M $ 
+\begin{align*}
+(\OSem {(\langle a \rangle \true \vee \langle b \rangle \true )\wedge [\Act ]X )}{\emptyset})^1 & \overset{\OSem{F}{}}{=} (\ausws{a}\Proc \cup \ausws{b} \Proc ) \cap \auswl{\Act}\emptyset \\
+&\overset{\ausws{} \auswl{} }{=} (\{p_1,p_2,p_5\} \cup \{p_1,p_3,p_4\} ) \cap \{p_6\} \\
+&\overset{\cdot \cup \cdot}{=} \{p_1,p_2,p_3,p_4,p_5\} \cap \{p_6\} \\
+&\overset{\cdot \cap \cdot}{=} \emptyset
+\end{align*}
+Die leere Menge ist der kleinste Fixpunkt der Formel
+\subsubsection*{b)}
+$\FIX \OSem{(\langle a \rangle \true \vee \langle b \rangle \true ) \wedge [\Act ]X}{}= (\OSem {(\langle a \rangle \true \vee \langle b \rangle \true )\wedge [\Act ]X )}{\Proc})^M $ 
+\begin{align*}
+(\OSem {(\langle a \rangle \true \vee \langle b \rangle \true )\wedge [\Act ]X )}{\Proc})^1 & \overset{\OSem{F}{}}{=} (\ausws{a}\Proc \cup \ausws{b} \Proc ) \cap \auswl{\Act}\Proc \\
+&\overset{\ausws{} \auswl{} }{=} (\{p_1,p_2,p_5\} \cup \{p_1,p_3,p_4\} ) \cap \{p_1,p_2,p_3,p_4,p_5,p_6\} \\
+&\overset{\cdot \cup \cdot}{=} \{p_1,p_2,p_3,p_4,p_5\} \cap \{p_1,p_2,p_3,p_4,p_5,p_6\} \\
+&\overset{\cdot \cap \cdot}{=} \{p_1,p_2,p_3,p_4,p_5\}
+\end{align*}
+\begin{align*}
+(\OSem {(\langle a \rangle \true \vee \langle b \rangle \true )\wedge [\Act ]X }{\Proc})^2 & \overset{\OSem{F}{}}{=} (\ausws{a}\Proc \cup \ausws{b} \Proc ) \cap \auswl{\Act}  \{p_1,p_2,p_3,p_4,p_5\}\\
+&\overset{\ausws{} \auswl{} }{=} (\{p_1,p_2,p_5\} \cup \{p_1,p_3,p_4\} ) \cap \{p_1,p_2,p_3,p_5,p_6\} \\
+&\overset{\cdot \cup \cdot}{=} \{p_1,p_2,p_3,p_4,p_5\} \cap \{p_1,p_2,p_3,p_5,p_6\} \\
+&\overset{\cdot \cap \cdot}{=} \{p_1,p_2,p_3,p_5\}
+\end{align*}
+\begin{align*}
+(\OSem {(\langle a \rangle \true \vee \langle b \rangle \true )\wedge [\Act ]X }{\Proc})^3 & \overset{\OSem{F}{}}{=} (\ausws{a}\Proc \cup \ausws{b} \Proc ) \cap \auswl{\Act}  \{p_1,p_2,p_3,p_5\}\\
+&\overset{\ausws{} \auswl{} }{=} (\{p_1,p_2,p_5\} \cup \{p_1,p_3,p_4\} ) \cap \{p_2,p_5,p_6\} \\
+&\overset{\cdot \cup \cdot}{=} \{p_1,p_2,p_3,p_4,p_5\} \cap \{p_2,p_5,p_6\} \\
+&\overset{\cdot \cap \cdot}{=} \{p_2,p_5\}
+\end{align*}
+\begin{align*}
+(\OSem {(\langle a \rangle \true \vee \langle b \rangle \true )\wedge [\Act ]X}{\Proc})^4 & \overset{\OSem{F}{}}{=} (\ausws{a}\Proc \cup \ausws{b} \Proc ) \cap \auswl{\Act}  \{p_2,p_5\}\\
+&\overset{\ausws{} \auswl{} }{=} (\{p_1,p_2,p_5\} \cup \{p_1,p_3,p_4\} ) \cap \{p_2,p_6\} \\
+&\overset{\cdot \cup \cdot}{=} \{p_1,p_2,p_3,p_4,p_5\} \cap \{p_2,p_6\} \\
+&\overset{\cdot \cap \cdot}{=} \{p_2\}
+\end{align*}
+\begin{align*}
+(\OSem {(\langle a \rangle \true \vee \langle b \rangle \true )\wedge [\Act ]X }{\Proc})^5 & \overset{\OSem{F}{}}{=} (\ausws{a}\Proc \cup \ausws{b} \Proc ) \cap \auswl{\Act}  \{p_2\}\\
+&\overset{\ausws{} \auswl{} }{=} (\{p_1,p_2,p_5\} \cup \{p_1,p_3,p_4\} ) \cap \{p_2,p_6\} \\
+&\overset{\cdot \cup \cdot}{=} \{p_1,p_2,p_3,p_4,p_5\} \cap \{p_2,p_6\} \\
+&\overset{\cdot \cap \cdot}{=} \{p_2\}
+\end{align*}
+Die Menge $\{p_2\}$ ist der größte Fixpunkt der Formel $(\langle a \rangle \true \vee \langle b \rangle \true )\wedge [\Act ]X $\\
 \end{document}
